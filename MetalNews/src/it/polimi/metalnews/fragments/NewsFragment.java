@@ -1,5 +1,6 @@
 package it.polimi.metalnews.fragments;
 
+import it.polimi.metalnews.News;
 import it.polimi.metalnews.R;
 import android.content.Context;
 import android.os.Bundle;
@@ -12,40 +13,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NewsFragment extends Fragment {
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {		
-		 return inflater.inflate(R.layout.fragment_news, container, false);
-    }
-	
-	class MySimpleArrayAdapter extends ArrayAdapter<String> {
-		  private final Context context;
-		  private final String[] values;
+			Bundle savedInstanceState) {		
+		return inflater.inflate(R.layout.fragment_news, container, false);
+	}
 
-		  public MySimpleArrayAdapter(Context context, String[] values) {
-		    super(context, R.layout.fragment_news, values);
-		    this.context = context;
-		    this.values = values;
-		  }
+	class NewsAdapter extends ArrayAdapter<News> {
+		private final Context context;
+		private final News[] values;
 
-		  @Override
-		  public View getView(int position, View convertView, ViewGroup parent) {
-		    LayoutInflater inflater = (LayoutInflater) context
-		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		    View rowView = inflater.inflate(R.layout.fragment_news, parent, false);
-		    TextView textView = (TextView) rowView.findViewById(R.id.label);
-		    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-		    textView.setText(values[position]);
-		    // change the icon for Windows and iPhone
-		    String s = values[position];
-		    if (s.startsWith("iPhone")) {
-		      imageView.setImageResource(R.drawable.no);
-		    } else {
-		      imageView.setImageResource(R.drawable.ok);
-		    }
+		public NewsAdapter(Context context, News[] values) {
+			super(context, R.layout.fragment_news, values);
+			this.context = context;
+			this.values = values;
+		}
 
-		    return rowView;
-		  }
-	
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(R.layout.fragment_news, parent, false);
+			
+			TextView backtitle = (TextView) rowView.findViewById(R.id.news_backtitle);
+			TextView title = (TextView) rowView.findViewById(R.id.news_backtitle);
+			ImageView img = (ImageView) rowView.findViewById(R.id.news_img);
+			
+			backtitle.setText(values[position].getBacktitle());
+			title.setText(values[position].getTitle());
+//			img.set			
+			return rowView;
+		}
+
+	}
 }
