@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,6 +16,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.View;
+import android.view.WindowManager;
 
 public class HomeActivity extends FragmentActivity implements
 ActionBar.TabListener {
@@ -26,9 +29,22 @@ ActionBar.TabListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (Build.VERSION.SDK_INT < 16) {
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+					WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		}else{
+			View decorView = getWindow().getDecorView();
+			// Hide the status bar.
+			int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+			decorView.setSystemUiVisibility(uiOptions);
+			// Remember that you should never show the action bar if the
+			// status bar is hidden, so hide that too if necessary.
+			ActionBar actionBar = getActionBar();
+			actionBar.hide();
+		}
+		
 		setContentView(R.layout.activity_home);
-
-		// Set up the action bar.
+		//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
@@ -131,7 +147,7 @@ ActionBar.TabListener {
 
 		@Override
 		public int getCount() {
-		
+
 			return 3;
 		}
 
