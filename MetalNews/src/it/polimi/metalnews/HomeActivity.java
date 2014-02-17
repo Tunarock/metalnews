@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,9 +16,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 public class HomeActivity extends FragmentActivity implements
 ActionBar.TabListener {
@@ -29,21 +32,24 @@ ActionBar.TabListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Build.VERSION.SDK_INT < 16) {
-			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		
+		
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 					WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		}else{
-			View decorView = getWindow().getDecorView();
-			// Hide the status bar.
-			int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-			decorView.setSystemUiVisibility(uiOptions);
-			// Remember that you should never show the action bar if the
-			// status bar is hidden, so hide that too if necessary.
-			ActionBar actionBar = getActionBar();
-			actionBar.hide();
-		}
+		
 		
 		setContentView(R.layout.activity_home);
+	
+		Intent intent=getIntent();
+		
+		String []imageUrls = intent.getStringArrayExtra("imageUrls");
+		String []titles = intent.getStringArrayExtra("titles");
+		
+		Log.e(imageUrls[1], "msg");
+		TextView title=(TextView) findViewById(R.id.news_title);
+		title.setText(titles[0]);
+//		
+		
 		//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		// Set up the action bar.
