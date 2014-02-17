@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="100dp"
-    android:background="@drawable/elements_grad">
+    android:background="@drawable/elements_grad" >
 
     <ImageView
         android:id="@+id/news_img"
@@ -10,9 +10,9 @@
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:padding="5dp"
         android:scaleType="fitStart"
-        android:src="@drawable/example"
-        android:padding="5dp"/>
+        android:src="@drawable/example" />
 
     <TextView
         android:id="@+id/news_title"
@@ -20,20 +20,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/news_img"
-        android:singleLine="false"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:paddingTop="5dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:text="BETWEEN THE BURIED AND ME:"
         android:textSize="20sp"
         android:textStyle="bold" />
 
-     <TextView
-         android:id="@+id/news_backtitle"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@id/news_title"
-         android:layout_toRightOf="@+id/news_img"
-         android:singleLine="false"
-         android:text="gli orari della data di Trezzo sull’Adda"
-         android:textSize="15sp" />
+    <TextView
+        android:id="@+id/news_backtitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/news_title"
+        android:layout_toRightOf="@+id/news_img"
+        android:singleLine="false"
+        android:text="gli orari della data di Trezzo sull’Adda"
+        android:textSize="15sp" />
 
-</RelativeLayout> 
+</RelativeLayout>
