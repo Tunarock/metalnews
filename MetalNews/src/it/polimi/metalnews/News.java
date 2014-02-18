@@ -1,4 +1,5 @@
 package it.polimi.metalnews;
+
 import android.graphics.Bitmap;
 
 public class News{
@@ -17,6 +18,7 @@ public class News{
 		this.backtitle= str.substring(endTitle+2, str.length());
 		
 		this.imgUrl=imgUrl;
+		
 	}
 	
 	public Bitmap getImg() {
@@ -43,13 +45,5 @@ public class News{
 	public void setImgUrl(String imgUrl){
 		this.imgUrl=imgUrl;
 	}
-
-
 	
-	
-	
-	
-	
-	
-
 }

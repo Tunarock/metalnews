@@ -4,18 +4,24 @@ import it.polimi.metalnews.fragments.AlbumFragment;
 import it.polimi.metalnews.fragments.ContestFragment;
 import it.polimi.metalnews.fragments.NewsFragment;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.WindowManager;
 
@@ -97,13 +103,15 @@ ActionBar.TabListener {
 			
 			news[cont]=new News(titles[cont],imageUrls[cont]);
 			
-			Log.e(news[cont].getTitle(), "msg");
-			Log.e(news[cont].getImgUrl(), "msg");
-			Log.e(news[cont].getBacktitle(), "msg");
+			
 						
 		}
 		return news;
 	}
+	
+	
+	
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
