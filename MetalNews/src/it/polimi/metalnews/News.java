@@ -8,8 +8,9 @@ public class News{
 	String title;
 	String backtitle;
 	String imgUrl;
+	String targetUrl;
 	
-	public News(String completeTitle, String imgUrl){
+	public News(String completeTitle, String imgUrl, String targetUrl){
 		
 		StringBuilder str=new StringBuilder(completeTitle);
 		int endTitle=str.indexOf(":");
@@ -18,9 +19,18 @@ public class News{
 		this.backtitle= str.substring(endTitle+2, str.length());
 		
 		this.imgUrl=imgUrl;
+		this.targetUrl=targetUrl;
 		
 	}
 	
+	public String getTargetUrl() {
+		return targetUrl;
+	}
+
+	public void setTargetUrl(String targetUrl) {
+		this.targetUrl = targetUrl;
+	}
+
 	public Bitmap getImg() {
 		return img;
 	}

@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 	String[] imageUrls= new String[35];
 	
 	String[] titles = new String[35];
-	
+	String[] targetUrl = new String[35];
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +62,17 @@ public class MainActivity extends Activity {
 					{
 						
 						titles[i]=block.getElementsByClass("text-small").get(0).text();
+						targetUrl[i]=block.getElementsByClass("text-small").get(0).attr("href");
 						imageUrls[i]=block.getElementsByTag("img").get(0).attr("src");
+						
+						
 						i++;
 					}
 					
 					Intent intent = new Intent(MainActivity.this, HomeActivity.class);					
 					intent.putExtra("imageUrls", imageUrls);
 					intent.putExtra("titles", titles);
+					intent.putExtra("targetUrl", targetUrl);
 					startActivity(intent);
 					
 
@@ -79,6 +83,9 @@ public class MainActivity extends Activity {
 						org.apache.http.Header[] headers,
 						byte[] responseBody,
 						java.lang.Throwable error) {
+
+					Intent intent = new Intent(MainActivity.this, HomeActivity.class);					
+					startActivity(intent);
 
 					
 				}

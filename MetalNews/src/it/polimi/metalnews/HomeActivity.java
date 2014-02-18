@@ -45,11 +45,7 @@ ActionBar.TabListener {
 		
 		setContentView(R.layout.activity_home);
 		
-		
-	
-		
-//		
-		
+			
 		//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		// Set up the action bar.
@@ -97,11 +93,11 @@ ActionBar.TabListener {
 		News[] news= new News[35];
 		String [] imageUrls = intent.getStringArrayExtra("imageUrls");
 		String [] titles = intent.getStringArrayExtra("titles");
-
+		String [] targetUrl = intent.getStringArrayExtra("targetUrl");
 		for(int cont=0;cont<35;cont++)
 		{
 			
-			news[cont]=new News(titles[cont],imageUrls[cont]);
+			news[cont]=new News(titles[cont],imageUrls[cont], targetUrl[cont]);
 			
 			
 						

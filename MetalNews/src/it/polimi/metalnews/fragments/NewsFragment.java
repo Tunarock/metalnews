@@ -1,31 +1,41 @@
 package it.polimi.metalnews.fragments;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import it.polimi.metalnews.HomeActivity;
 import it.polimi.metalnews.ImageDownloader;
+import it.polimi.metalnews.MainActivity;
 import it.polimi.metalnews.News;
 import it.polimi.metalnews.R;
-
-import java.io.InputStream;
-
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpClient;
 
 public class NewsFragment extends ListFragment {
 
-	//	@Override
-	//	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	//			Bundle savedInstanceState) {			
-	//		return inflater.inflate(R.layout.activity_news, container, false);
-	//	}
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {			
+			return inflater.inflate(R.layout.listview_news, container, false);
+		}
 
 	private News[] news;
 
@@ -36,9 +46,49 @@ public class NewsFragment extends ListFragment {
 
 		NewsAdapter ada=new NewsAdapter(getActivity().getBaseContext(), news);
 		setListAdapter(ada);
+		getListView().setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				
+				AsyncHttpClient client = new AsyncHttpClient();
+				String url=news[position].getTargetUrl();
+
+					client.get(url,new AsyncHttpResponseHandler() {
+						
+						public void onStart(){
+						
+						}
+						
+						@Override
+						public void onSuccess(String response) {
+							
+							
+						Intent i=new Intent(getActivity(), NewsActivity.class);
+						i.putExtra("newsHtml", response);
+						StartActivity(i);
+						
+						}
+						
+						@Override
+						public void onFailure(int statusCode,
+								org.apache.http.Header[] headers,
+								byte[] responseBody,
+								java.lang.Throwable error) {
+							
+						}
+					});
+				
+				
+			}
+			
+		});
+		
+		
 	}
-
+	
 	public NewsFragment(News[] news)
 	{
 		super();
