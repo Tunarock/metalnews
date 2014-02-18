@@ -10,5 +10,7 @@
     <string name="title_1">Notizie</string>
     <string name="title_2">Recensioni</string>
     <string name="title_3">Contest</string>
+    <string name="title_activity_news">NewsActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

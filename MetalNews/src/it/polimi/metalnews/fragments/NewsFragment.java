@@ -1,23 +1,13 @@
 package it.polimi.metalnews.fragments;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import it.polimi.metalnews.HomeActivity;
 import it.polimi.metalnews.ImageDownloader;
-import it.polimi.metalnews.MainActivity;
 import it.polimi.metalnews.News;
+import it.polimi.metalnews.NewsActivity;
 import it.polimi.metalnews.R;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +15,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 
 public class NewsFragment extends ListFragment {
@@ -68,7 +60,7 @@ public class NewsFragment extends ListFragment {
 							
 						Intent i=new Intent(getActivity(), NewsActivity.class);
 						i.putExtra("newsHtml", response);
-						StartActivity(i);
+						startActivity(i);
 						
 						}
 						
