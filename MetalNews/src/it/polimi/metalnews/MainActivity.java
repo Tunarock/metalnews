@@ -56,22 +56,17 @@ public class MainActivity extends Activity {
 					Element link = doc.getElementById("recent-posts");
 					
 					Elements blocks= link.getElementsByClass("box-light");
-					
+		
 					int i=0;
-			
-					
 					for(Element block: blocks)
 					{
-						imageUrls[i] = block.getElementsByTag("img").get(0).attr("src");
-						titles[i] = block.getElementsByClass("text-small").get(0).text();
-						i++;
 						
-						Log.e(Integer.toString(i), "msg");
-						Log.e(imageUrls[i], "msg");
-						Log.e(titles[i], "msg");
+						titles[i]=block.getElementsByClass("text-small").get(0).text();
+						imageUrls[i]=block.getElementsByTag("img").get(0).attr("src");
+						i++;
 					}
 					
-					Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+					Intent intent = new Intent(MainActivity.this, HomeActivity.class);					
 					intent.putExtra("imageUrls", imageUrls);
 					intent.putExtra("titles", titles);
 					startActivity(intent);

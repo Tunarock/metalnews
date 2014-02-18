@@ -9,18 +9,15 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 public class HomeActivity extends FragmentActivity implements
 ActionBar.TabListener {
@@ -28,6 +25,8 @@ ActionBar.TabListener {
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
 	ViewPager mViewPager;
+	
+	News[] news;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +38,10 @@ ActionBar.TabListener {
 		
 		
 		setContentView(R.layout.activity_home);
+		
+		
 	
-		Intent intent=getIntent();
 		
-		String []imageUrls = intent.getStringArrayExtra("imageUrls");
-		String []titles = intent.getStringArrayExtra("titles");
-		
-		Log.e(imageUrls[1], "msg");
-		TextView title=(TextView) findViewById(R.id.news_title);
-		title.setText(titles[0]);
 //		
 		
 		//		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -91,6 +85,26 @@ ActionBar.TabListener {
 		}
 	}
 
+	public News[] getNewsFromIntent() {
+		Intent intent=getIntent();
+
+		News[] news= new News[35];
+		String [] imageUrls = intent.getStringArrayExtra("imageUrls");
+		String [] titles = intent.getStringArrayExtra("titles");
+
+		for(int cont=0;cont<35;cont++)
+		{
+			
+			news[cont]=new News(titles[cont],imageUrls[cont]);
+			
+			Log.e(news[cont].getTitle(), "msg");
+			Log.e(news[cont].getImgUrl(), "msg");
+			Log.e(news[cont].getBacktitle(), "msg");
+						
+		}
+		return news;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -127,18 +141,20 @@ ActionBar.TabListener {
 		}
 
 		@Override
-		public Fragment getItem(int position) {
+		public ListFragment getItem(int position) {
 			// getItem is called to instantiate the fragment for the given page.
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
 
-			Fragment fragment=null;
+			ListFragment fragment=null;
+			
 
 			switch(position)
 			{
 
 			case 0:
-				fragment=new NewsFragment();
+				
+				fragment=new NewsFragment(getNewsFromIntent());
 				break;
 			case 1:
 				fragment=new AlbumFragment();

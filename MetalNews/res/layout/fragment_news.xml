@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:padding="5dp"
         android:scaleType="fitStart"
-        android:src="@drawable/example" />
+        android:src="@drawable/empty_element" />
 
     <TextView
         android:id="@+id/news_title"
@@ -28,7 +28,6 @@
         android:paddingTop="5dp"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="BETWEEN THE BURIED AND ME:"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -39,7 +38,6 @@
         android:layout_below="@id/news_title"
         android:layout_toRightOf="@+id/news_img"
         android:singleLine="false"
-        android:text="gli orari della data di Trezzo sull’Adda"
         android:textSize="15sp" />
 
 </RelativeLayout>
