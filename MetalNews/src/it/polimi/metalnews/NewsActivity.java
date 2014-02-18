@@ -62,7 +62,7 @@ public class NewsActivity extends Activity {
 			
 			view = li.inflate(R.layout.single_text_element, ll, false);
 			TextView tw= (TextView) view.findViewById(R.id.text);
-			tw.setText(Html.fromHtml(p.html(), new ImageDownloadHtml() ,null));
+			tw.setText(Html.fromHtml(p.html(), new UrlImageParser(view, null) ,null));
 			ll.addView(tw);
 			
 		}
