@@ -10,21 +10,23 @@ import org.apache.http.client.methods.HttpGet;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
+import android.text.Html.ImageGetter;
 import android.util.Log;
 import android.widget.ImageView;
 
-public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
-	private final WeakReference imageViewReference;
-	private Bitmap image;
-	private News[] news;
-	private int position;
+public abstract class ImageDownloader extends AsyncTask<String, Void, Bitmap>  {
+	protected Bitmap image;
+	protected News[] news;
+	protected int position;
 
-	public ImageDownloader(ImageView imageView, News[] news, int position) {
-		imageViewReference = new WeakReference(imageView);
-		this.news=news;
-		this.position=position;
+	public ImageDownloader() {
+
 	}
 	
 	public Bitmap getImage(){
@@ -40,26 +42,10 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
 	@Override
 	// Once the image is downloaded, associates it to the imageView
-	protected void onPostExecute(Bitmap bitmap) {
-		if (isCancelled()) {
-			bitmap = null;
-		}
-
-		if (imageViewReference != null) {
-			ImageView imageView = (ImageView) imageViewReference.get();
-			if (imageView != null) {
-
-				if (bitmap != null) {
-					imageView.setImageBitmap(bitmap);
-					news[position].setImg(bitmap);
-				}
-			}
-
-		}
-	}
+	protected abstract void onPostExecute(Bitmap bitmap);
 
 
-	private Bitmap downloadBitmap(String url) {
+	protected Bitmap downloadBitmap(String url) {
 		final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
 		final HttpGet getRequest = new HttpGet(url);
 		try {
@@ -97,4 +83,6 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 		}
 		return null;
 	}
+
+	
 }

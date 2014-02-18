@@ -1,7 +1,5 @@
 package it.polimi.metalnews;
 
-import java.util.ArrayList;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,7 +8,11 @@ import org.jsoup.select.Elements;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Html.ImageGetter;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,8 +33,8 @@ public class NewsActivity extends Activity {
 		
 		
 		//Strutturadati sd = new Dispatcher(newsHtml).getStrutturaDati();
-		
-	
+		dispatch(newsHtml);
+
 
 	}
 
@@ -52,16 +54,16 @@ public class NewsActivity extends Activity {
 		
 		Elements paragraphs = entryContent.get(0).getElementsByTag("p"); 
 		
-		ArrayList<TextView> tw = new ArrayList<TextView>();
-		
-		LinearLayout ll = (LinearLayout) findViewById(R.layout.activity_news);
-		
+		 LinearLayout ll = (LinearLayout) findViewById(R.id.news_layout);
+		 LayoutInflater li=getLayoutInflater();
+		 View view;
+		 
 		for(Element p: paragraphs){
 			
-			TextView t = new TextView(this);
-			t.setText(p.text());
-			
-			ll.addView(t);
+			view = li.inflate(R.layout.single_text_element, ll, false);
+			TextView tw= (TextView) view.findViewById(R.id.text);
+			tw.setText(Html.fromHtml(p.html(), new ImageDownloadHtml() ,null));
+			ll.addView(tw);
 			
 		}
 		

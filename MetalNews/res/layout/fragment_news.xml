@@ -23,7 +23,7 @@
         android:ellipsize="marquee"
         android:fadingEdge="horizontal"
         android:marqueeRepeatLimit="marquee_forever"
-        android:focusable="true"
+        android:focusable="false"
         android:focusableInTouchMode="true"
         android:paddingTop="5dp"
         android:scrollHorizontally="true"

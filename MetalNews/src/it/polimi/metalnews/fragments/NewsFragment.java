@@ -1,6 +1,7 @@
 package it.polimi.metalnews.fragments;
 
 import it.polimi.metalnews.ImageDownloader;
+import it.polimi.metalnews.ImageDownloaderNews;
 import it.polimi.metalnews.News;
 import it.polimi.metalnews.NewsActivity;
 import it.polimi.metalnews.R;
@@ -23,11 +24,11 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class NewsFragment extends ListFragment {
 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {			
-			return inflater.inflate(R.layout.listview_news, container, false);
-		}
+//		@Override
+//		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//				Bundle savedInstanceState) {			
+//			return inflater.inflate(R.layout.listview_news, container, false);
+//		}
 
 	private News[] news;
 
@@ -115,7 +116,7 @@ public class NewsFragment extends ListFragment {
 				title.setText(values[position].getTitle());
 				if(values[position].getImg() == null)
 				{
-					ImageDownloader imgDown= new ImageDownloader(img, values, position);
+					ImageDownloader imgDown= new ImageDownloaderNews(img, values, position);
 					imgDown.execute(values[position].getImgUrl());
 					
 				}
