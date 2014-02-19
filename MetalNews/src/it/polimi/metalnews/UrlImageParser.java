@@ -9,6 +9,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -69,6 +70,9 @@ public class UrlImageParser implements ImageGetter {
 
 			// redraw the image by invalidating the container
 			UrlImageParser.this.container.invalidate();
+			
+			
+			
 		}
 
 		/***
@@ -79,10 +83,13 @@ public class UrlImageParser implements ImageGetter {
 		public Drawable fetchDrawable(String urlString) {
 			try {
 				InputStream is = fetch(urlString);
+				
+				
 				Drawable drawable = Drawable.createFromStream(is, "src");
 				drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0 
 						+ drawable.getIntrinsicHeight()); 
 				return drawable;
+			     
 			} catch (Exception e) {
 				return null;
 			} 
@@ -96,7 +103,7 @@ public class UrlImageParser implements ImageGetter {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
+
 	public class UrlDrawable extends BitmapDrawable {
 		// the drawable that you need to set, you could set the initial drawing
 		// with the loading image if you need to

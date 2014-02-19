@@ -3,6 +3,7 @@ package it.polimi.metalnews;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import android.app.Activity;
@@ -25,13 +26,13 @@ public class NewsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_news);
-		
+
 		Intent intent = getIntent();
 
 		String newsHtml = intent.getStringExtra("newsHtml");
-//		String newsTitle = intent.getStringExtra("title");	
-		
-		
+		//		String newsTitle = intent.getStringExtra("title");	
+
+
 		//Strutturadati sd = new Dispatcher(newsHtml).getStrutturaDati();
 		dispatch(newsHtml);
 
@@ -45,27 +46,30 @@ public class NewsActivity extends Activity {
 		return true;
 	}
 
-	
+
 	private void dispatch(String content){
-		
+
+		content=Jsoup.clean(content, Whitelist.basic());
 		Document doc = Jsoup.parse(content);
-		
+
 		Elements entryContent = doc.getElementsByClass(ENTRY_CONTENT);
+
+		//Elements paragraphs = entryContent.get(0).getElementsByTag("p"); 
+
+		LinearLayout ll = (LinearLayout) findViewById(R.id.news_layout);
+		LayoutInflater li=getLayoutInflater();
+		View view;
+
+		//for(Element p: paragraphs){
+
+		view = li.inflate(R.layout.single_text_element, ll, false);
+		TextView tw= (TextView) view.findViewById(R.id.text);
+		tw.setText(Html.fromHtml(entryContent.html(), new UrlImageParser(view, null) ,null));
+		ll.addView(tw);
 		
-		Elements paragraphs = entryContent.get(0).getElementsByTag("p"); 
-		
-		 LinearLayout ll = (LinearLayout) findViewById(R.id.news_layout);
-		 LayoutInflater li=getLayoutInflater();
-		 View view;
-		 
-		for(Element p: paragraphs){
-			
-			view = li.inflate(R.layout.single_text_element, ll, false);
-			TextView tw= (TextView) view.findViewById(R.id.text);
-			tw.setText(Html.fromHtml(p.html(), new UrlImageParser(view, null) ,null));
-			ll.addView(tw);
-			
-		}
-		
+		//}
+
+
+
 	}
 }
