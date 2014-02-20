@@ -14,7 +14,9 @@ import android.text.Html.ImageGetter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class NewsActivity extends Activity {
@@ -49,32 +51,40 @@ public class NewsActivity extends Activity {
 
 	private void dispatch(String content){
 
-
-		
 		Document doc = Jsoup.parse(content);
 
 		Elements entryContent = doc.getElementsByClass(ENTRY_CONTENT);
 
 		Elements paragraphs = entryContent.get(0).getElementsByTag("p"); 
 
-		LinearLayout ll = (LinearLayout) findViewById(R.id.news_layout);
+		LinearLayout rl = (LinearLayout) findViewById(R.id.news_layout);
 		LayoutInflater li=getLayoutInflater();
-		View view;
-
-		String newContent="<html>";
+		
 		for(Element p: paragraphs)
 		{
-			newContent+="<p>"+p.html()+"</p>";
-		
+			analyzer(p, rl, li);
 		}
-		newContent+="</html>";
-	
-		view = li.inflate(R.layout.single_text_element, ll, false);
-		TextView tw= (TextView) view.findViewById(R.id.text);
-		tw.setText(Html.fromHtml(newContent, new UrlImageParser(view, null) ,null));
-		ll.addView(tw);
+
+	}
+
+	private void analyzer (Element e, LinearLayout ll, LayoutInflater li){
+
+		if(e.hasText()){
+			View view = li.inflate(R.layout.single_text_element, ll, false);
+			TextView tw= (TextView) view.findViewById(R.id.text);
+			tw.setText(Html.fromHtml(e.html(), null ,null));
+			ll.addView(tw);			
+		}else{
+			if(!e.getElementsByTag("img").isEmpty()){
+				View view = li.inflate(R.layout.single_image_element, ll, false);
+				ImageView iv= (ImageView) view.findViewById(R.id.img);
+				ll.addView(iv);
+				ImageDownloadHtml imgDown= new ImageDownloadHtml(iv);
+				imgDown.execute(e.getElementsByTag("img").get(0).attr("src"));
+			}
 
 
+		}
 
 
 	}

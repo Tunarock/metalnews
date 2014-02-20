@@ -1,35 +1,45 @@
 package it.polimi.metalnews;
 
+import java.lang.ref.WeakReference;
+
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html.ImageGetter;
 import android.util.Log;
+import android.widget.ImageView;
 
-public class ImageDownloadHtml extends ImageDownloader implements ImageGetter {
+public class ImageDownloadHtml extends ImageDownloader {
 
-	public Bitmap b;
+	protected final WeakReference imageViewReference;
+	
+	public ImageDownloadHtml(ImageView imageView) {
+		super();
+		imageViewReference = new WeakReference(imageView);	
+	}
+
+	
 	@Override
 	protected void onPostExecute(Bitmap bitmap) {
-		this.b=bitmap;
+		if (isCancelled()) {
+			bitmap = null;
+		}
+
+		if (imageViewReference != null) {
+			ImageView imageView = (ImageView) imageViewReference.get();
+			if (imageView != null) {
+
+				if (bitmap != null) {
+					imageView.setImageBitmap(bitmap);
+				}
+			}
+
+		}
+		
 	}
 
-	@Override
-	public Drawable getDrawable(String source) {
-
-		ImageDownloadHtml idh = new ImageDownloadHtml();
-		
-		idh.execute(source);
-
-		//		b = downloadBitmap(source);
-		do{
-			Log.i("STATUS", this.getStatus().toString());
-		}while(idh.getStatus()!=AsyncTask.Status.FINISHED);
-		
-		BitmapDrawable bitmapDrawable = new BitmapDrawable(idh.b);
-		return bitmapDrawable;
-	}
+	
 
 }
 
