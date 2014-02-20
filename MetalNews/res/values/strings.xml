@@ -12,5 +12,6 @@
     <string name="title_3">Contest</string>
     <string name="title_activity_news">NewsActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="no_connection_text">Oops, nessuna connessione internet rilevata!</string>
 
 </resources>

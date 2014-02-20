@@ -142,5 +142,6 @@
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
     <color name="black_overlay">#66000000</color>
+    <color name="GreenMetal">#00BF00</color>
 
 </resources>
