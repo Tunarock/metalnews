@@ -49,25 +49,31 @@ public class NewsActivity extends Activity {
 
 	private void dispatch(String content){
 
-		content=Jsoup.clean(content, Whitelist.basic());
+
+		
 		Document doc = Jsoup.parse(content);
 
 		Elements entryContent = doc.getElementsByClass(ENTRY_CONTENT);
 
-		//Elements paragraphs = entryContent.get(0).getElementsByTag("p"); 
+		Elements paragraphs = entryContent.get(0).getElementsByTag("p"); 
 
 		LinearLayout ll = (LinearLayout) findViewById(R.id.news_layout);
 		LayoutInflater li=getLayoutInflater();
 		View view;
 
-		//for(Element p: paragraphs){
-
+		String newContent="<html>";
+		for(Element p: paragraphs)
+		{
+			newContent+="<p>"+p.html()+"</p>";
+		
+		}
+		newContent+="</html>";
+	
 		view = li.inflate(R.layout.single_text_element, ll, false);
 		TextView tw= (TextView) view.findViewById(R.id.text);
-		tw.setText(Html.fromHtml(entryContent.html(), new UrlImageParser(view, null) ,null));
+		tw.setText(Html.fromHtml(newContent, new UrlImageParser(view, null) ,null));
 		ll.addView(tw);
-		
-		//}
+
 
 
 
