@@ -28,19 +28,15 @@ public class MainActivity extends Activity implements AnimationListener {
 
 	private static final int NEWS_LENGTH = 35;
 	private static final String URL_NEWS = "http://metalitalia.com/category/notizie/";
-	private static final String URL_ALBUM = "http://metalitalia.com/category/album/";
-	private static final String URL_CONTEST = "http://metalitalia.com/category/contest/";
+
+
 	private static final int ANIMATION_TIME = 5000;
-	protected static final int ALBUM_CONTEST_LENGTH = 20;
+
 
 	private Info[] news;
-	private Info[] album;
-	private Info[] contests;
 
 	private TextView noConnectionText;
 	private Button noConnectionButton;
-	protected boolean isSuccededAlbum ;
-	protected boolean isSuccededContest;
 	protected boolean isSuccededNews;
 
 
@@ -49,8 +45,6 @@ public class MainActivity extends Activity implements AnimationListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		isSuccededAlbum = false;
-		isSuccededContest= false;
 		isSuccededNews= false;
 
 		noConnectionText = (TextView) findViewById(R.id.no_connectiontext);
@@ -70,8 +64,6 @@ public class MainActivity extends Activity implements AnimationListener {
 			animLogo.setAnimationListener(this);
 			ivLogo.startAnimation(animLogo);
 
-
-
 		}else{
 			ivLogo.setImageDrawable(getResources().getDrawable(R.drawable.noconnection));
 			noConnectionButton.setText("Attiva connessione");
@@ -83,16 +75,22 @@ public class MainActivity extends Activity implements AnimationListener {
 	@Override
 	public void onAnimationEnd(Animation animation) {
 
-		
+		if(isSuccededNews)
+			startHome();
+		else{
+			ImageView ivLogo = (ImageView) findViewById(R.id.main_logo);
+			ivLogo.setImageDrawable(getResources().getDrawable(R.drawable.noconnection));
+			noConnectionButton.setText("Attiva connessione");
+			noConnectionButton.setVisibility(View.VISIBLE);
+			noConnectionText.setVisibility(View.VISIBLE);	
+		}
 	}
 
 	private void startHome() {
-		
+
 		Intent intent = new Intent(this, HomeActivity.class);
 
 		intent.putExtra("news", news);
-		intent.putExtra("album", album);
-		intent.putExtra("contest", contests);
 
 		startActivity(intent);
 	}
@@ -124,14 +122,6 @@ public class MainActivity extends Activity implements AnimationListener {
 		clientNews.setTimeout(ANIMATION_TIME);
 		clientNews.get(URL_NEWS,getNewsResponseHandler());
 
-		AsyncHttpClient clientContest = new AsyncHttpClient();
-		clientContest.setTimeout(ANIMATION_TIME);
-		clientContest.get(URL_CONTEST,getContestResponseHandler());
-
-		AsyncHttpClient clientAlbum = new AsyncHttpClient();
-		clientAlbum.setTimeout(ANIMATION_TIME);
-		clientAlbum.get(URL_ALBUM,getAlbumResponseHandler());
-
 	}
 
 	private boolean isOnline() {
@@ -158,7 +148,7 @@ public class MainActivity extends Activity implements AnimationListener {
 
 				Log.i("SUCCESSTHREAD", "news");
 
-				
+
 
 				String[] imageUrls= new String[NEWS_LENGTH];	
 				String[] titles = new String[NEWS_LENGTH];
@@ -183,8 +173,7 @@ public class MainActivity extends Activity implements AnimationListener {
 				news = createInfoBundle(NEWS_LENGTH, titles,targetUrl,imageUrls);
 
 				isSuccededNews = true;
-				if(isSuccededAlbum && isSuccededContest)
-					startHome();
+
 
 			}
 
@@ -200,105 +189,4 @@ public class MainActivity extends Activity implements AnimationListener {
 			}
 		};
 	}
-
-	private AsyncHttpResponseHandler getAlbumResponseHandler(){
-
-		return new AsyncHttpResponseHandler() {			
-
-			public void onStart(){
-
-				Log.i("SUCCESSTHREAD", "START-ALBUM");
-
-			}
-
-			@Override
-			public void onSuccess(String response) {
-				Log.i("SUCCESSTHREAD", "album");
-				
-				album = getArrayInfoFromHtml(response);
-
-				isSuccededAlbum = true;
-				if(isSuccededContest && isSuccededNews)
-					startHome();
-
-			}
-
-			@Override
-			public void onFailure(int statusCode,
-					org.apache.http.Header[] headers,
-					byte[] responseBody,
-					java.lang.Throwable error) {
-
-				//DISPLAY A NOTIFICATION OR A BUTTON TO SAY THAT MAYBE WIRELESS IS NOT ACTIVATED
-				Log.i("FAILTHREAD", "album");
-
-			}
-		};
-	}
-
-	private AsyncHttpResponseHandler getContestResponseHandler(){
-
-		return new AsyncHttpResponseHandler() {			
-
-			public void onStart(){
-
-				Log.i("SUCCESSTHREAD", "START-CONTEST");
-
-			}
-
-			@Override
-			public void onSuccess(String response) {
-				Log.i("SUCCESSTHREAD", "contest");			
-
-				contests = getArrayInfoFromHtml(response);
-				isSuccededContest = true;
-				
-				if(isSuccededAlbum && isSuccededNews)
-					startHome();
-
-			}
-
-			@Override
-			public void onFailure(int statusCode,
-					org.apache.http.Header[] headers,
-					byte[] responseBody,
-					java.lang.Throwable error) {
-
-				//DISPLAY A NOTIFICATION OR A BUTTON TO SAY THAT MAYBE WIRELESS IS NOT ACTIVATED
-				Log.i("FAILTHREAD", "contest");
-
-			}
-		};
-	}
-
-	// restituisce solo array o di album o contest!!!!!
-	private Info[] getArrayInfoFromHtml(String response) {
-
-
-		String[] imageUrls= new String[ALBUM_CONTEST_LENGTH];	
-		String[] titles = new String[ALBUM_CONTEST_LENGTH];
-		String[] targetUrl = new String[ALBUM_CONTEST_LENGTH];
-
-		Document doc=Jsoup.parse(response);
-		Element link = doc.getElementById("recent-posts");
-
-		Elements blocks= link.getElementsByClass("entry");
-
-		int i=0;
-		for(Element block: blocks)
-		{
-			titles[i]=block.getElementsByClass("title").get(0).text();
-			targetUrl[i]=block.getElementsByClass("title").get(0).getElementsByTag("a").get(0).attr("href");
-			Elements elementsByTag = block.getElementsByTag("img");
-			if(elementsByTag.size()>0)
-				imageUrls[i]=elementsByTag.get(0).attr("src");					
-
-			i++;
-		}
-
-		Log.i("getdata", "getdata");
-
-		return createInfoBundle(ALBUM_CONTEST_LENGTH, titles,targetUrl,imageUrls);
-	}
-
 }

@@ -32,27 +32,28 @@ ActionBar.TabListener {
 
 	private static final int NEWS_LENGTH = 35;
 	private static final int ALBUM_CONTEST_LENGTH = 20;
-	
+	private static final String URL_CONTEST = "http://metalitalia.com/category/contest/";
+
+	private static final String URL_ALBUM = "http://metalitalia.com/category/album/";
+
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
 	ViewPager mViewPager;
-	
+
 	private Info[] news;
-	private Info[] album;
-	private Info[] contests;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		
+
+
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-					WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		
-		
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
 		setContentView(R.layout.activity_home);
-		
-			
+
+
 		//		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		// Set up the action bar.
@@ -98,14 +99,14 @@ ActionBar.TabListener {
 
 		Info[] news = new Info[n];
 		Parcelable[] newsParc = getIntent().getExtras().getParcelableArray(tag);
-		
+
 		int cont=0;
 		for(Parcelable x : newsParc){
-			
+
 			news[cont] = (Info) x;
 			cont++;
 		}
-	
+
 		return news;
 	}	
 
@@ -153,20 +154,20 @@ ActionBar.TabListener {
 			// below) with the page number as its lone argument.
 
 			ListFragment fragment=null;
-			
+
 
 			switch(position)
 			{
 
 			case 0:
-				
+
 				fragment=new NewsFragment(getNewsFromIntent("news", NEWS_LENGTH ));
 				break;
 			case 1:
-				fragment=new AlbumFragment(getNewsFromIntent("album", ALBUM_CONTEST_LENGTH));
+				fragment=new AlbumFragment(URL_ALBUM);
 				break;
 			case 2:
-				fragment=new ContestFragment(getNewsFromIntent("contest", ALBUM_CONTEST_LENGTH));;
+				fragment=new ContestFragment(URL_CONTEST);
 				break;
 			}
 

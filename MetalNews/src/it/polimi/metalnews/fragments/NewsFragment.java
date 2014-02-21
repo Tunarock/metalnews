@@ -88,7 +88,7 @@ public class NewsFragment extends ListFragment {
 			private final Info[] values;
 
 			public NewsAdapter(Context context, Info[] values) {
-				super(context, R.layout.fragment_news, values);
+				super(context, R.layout.fragment_info, values);
 				this.context = context;
 				this.values = values;
 			}
@@ -97,7 +97,7 @@ public class NewsFragment extends ListFragment {
 			public View getView(int position, View convertView, ViewGroup parent) {
 
 				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				View rowView = inflater.inflate(R.layout.fragment_news, parent, false);
+				View rowView = inflater.inflate(R.layout.fragment_info, parent, false);
 
 
 				TextView backtitle = (TextView) rowView.findViewById(R.id.news_backtitle);
