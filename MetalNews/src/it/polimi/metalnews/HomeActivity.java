@@ -30,6 +30,9 @@ import android.view.WindowManager;
 public class HomeActivity extends FragmentActivity implements
 ActionBar.TabListener {
 
+	private static final int NEWS_LENGTH = 35;
+	private static final int ALBUM_CONTEST_LENGTH = 20;
+	
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
 	ViewPager mViewPager;
@@ -91,10 +94,10 @@ ActionBar.TabListener {
 		}
 	}
 
-	public Info[] getNewsFromIntent() {
+	public Info[] getNewsFromIntent(String tag, int n) {
 
-		Info[] news = new Info[35];
-		Parcelable[] newsParc = getIntent().getExtras().getParcelableArray("news");
+		Info[] news = new Info[n];
+		Parcelable[] newsParc = getIntent().getExtras().getParcelableArray(tag);
 		
 		int cont=0;
 		for(Parcelable x : newsParc){
@@ -137,6 +140,8 @@ ActionBar.TabListener {
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+		private static final int NUMBER_OF_FRAGMENT = 3;
+
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
 		}
@@ -155,13 +160,13 @@ ActionBar.TabListener {
 
 			case 0:
 				
-				fragment=new NewsFragment(getNewsFromIntent());
+				fragment=new NewsFragment(getNewsFromIntent("news", NEWS_LENGTH ));
 				break;
 			case 1:
-				fragment=new AlbumFragment();
+				fragment=new AlbumFragment(getNewsFromIntent("album", ALBUM_CONTEST_LENGTH));
 				break;
 			case 2:
-				fragment=new ContestFragment();
+				fragment=new ContestFragment(getNewsFromIntent("contest", ALBUM_CONTEST_LENGTH));;
 				break;
 			}
 
@@ -171,7 +176,7 @@ ActionBar.TabListener {
 		@Override
 		public int getCount() {
 
-			return 3;
+			return NUMBER_OF_FRAGMENT;
 		}
 
 		@Override

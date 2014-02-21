@@ -13,5 +13,7 @@
     <string name="title_activity_news">NewsActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="no_connection_text">Oops, nessuna connessione internet rilevata!</string>
+    <string name="title_activity_album">AlbumActivity</string>
+    <string name="title_activity_contest">ContestActivity</string>
 
 </resources>

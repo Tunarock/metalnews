@@ -23,16 +23,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 
 public class NewsFragment extends ListFragment {
-
-//		@Override
-//		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//				Bundle savedInstanceState) {			
-//			return inflater.inflate(R.layout.listview_news, container, false);
-//		}
-
 	private Info[] news;
-	private Info[] album;
-	private Info[] contests;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
