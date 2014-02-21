@@ -69,7 +69,7 @@ public abstract class InfoFragment extends ListFragment {
 
 			}
 
-			
+
 			@Override
 			public void onFailure(int statusCode,
 					org.apache.http.Header[] headers,
@@ -82,7 +82,7 @@ public abstract class InfoFragment extends ListFragment {
 		};
 	}
 
-	
+
 	protected void setInfoAdapter() {
 		NewsAdapter ada=new NewsAdapter(getActivity().getBaseContext(), info);
 		setListAdapter(ada);
@@ -91,44 +91,48 @@ public abstract class InfoFragment extends ListFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				// TODO Auto-generated method stub
 
 				AsyncHttpClient client = new AsyncHttpClient();
 				String url=info[position].getTargetUrl();
 
-				client.get(url,new AsyncHttpResponseHandler() {
-
-					public void onStart(){
-
-					}
-
-					@Override
-					public void onSuccess(String response) {
-
-
-						startIntentFromListViewElement(response);
-
-					}
-
-
-
-					@Override
-					public void onFailure(int statusCode,
-							org.apache.http.Header[] headers,
-							byte[] responseBody,
-							java.lang.Throwable error) {
-
-					}
-				});
-
+				client.get(url,new ListenerResponseHandler(position));
 
 			}
-
 		});
 	}
 
+	protected class ListenerResponseHandler extends AsyncHttpResponseHandler {
 
-	protected abstract void startIntentFromListViewElement(String response);
+		private int position;
+
+		public ListenerResponseHandler(int position){
+
+			this.position = position;
+		}
+
+		public void onStart(){
+
+		}
+
+		@Override
+		public void onSuccess(String response) {
+
+			startIntentFromListViewElement(response,info[position]);
+
+		}
+		
+		@Override
+		public void onFailure(int statusCode,
+				org.apache.http.Header[] headers,
+				byte[] responseBody,
+				java.lang.Throwable error) {
+
+		}
+	}
+
+
+
+	protected abstract void startIntentFromListViewElement(String response, Info info);
 
 	protected class NewsAdapter extends ArrayAdapter<Info> {
 		private final Context context;

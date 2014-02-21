@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/album_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -8,9 +9,54 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AlbumActivity" >
 
+    <ImageView
+        android:id="@+id/album_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:padding="2dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/album" />
+
     <TextView
+        android:id="@+id/album_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignTop="@+id/album_img"
+        android:layout_toRightOf="@+id/album_img"
+        android:background="@drawable/background_album_voices"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:text="OPERA ROCK"
+        android:textSize="25sp"
+        android:textColor="@color/White" />
+
+    <TextView
+        android:id="@+id/grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/album_img"
+        android:layout_toRightOf="@+id/album_img"
+        android:background="@drawable/background_album_voices"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:textSize="15sp"
+        android:text="6.5"
+        android:textColor="@color/White" />
+
+    <TextView
+        android:id="@+id/album_backtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/album_title"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@+id/album_img"
+        android:background="@drawable/background_album_voices"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:text="Starborn"
+        android:textColor="@color/White"
+        android:textSize="15sp" />
 
 </RelativeLayout>

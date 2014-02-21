@@ -24,20 +24,23 @@ public class Info implements Parcelable{
 
 		StringBuilder str=new StringBuilder(completeTitle);
 		int endTitle=str.indexOf(":");
-		
-		if(endTitle == -1)
-			endTitle=str.indexOf("-");
 
-		this.title=str.substring(0, endTitle+1);
-		this.backtitle= str.substring(endTitle+2, str.length());
+		if(endTitle == -1){
+			endTitle=str.indexOf("–");
 
+			this.title=str.substring(0, endTitle-2);
+			this.backtitle= str.substring(endTitle+2, str.length());
+		}else{
+			this.title=str.substring(0, endTitle+1);
+			this.backtitle= str.substring(endTitle+2, str.length());
+		}
 		this.imgUrl=imgUrl;
 		this.targetUrl=targetUrl;
 
 	}
 
 	public static final Parcelable.Creator<Info> CREATOR = new Parcelable.Creator<Info>() {
-		
+
 		public Info createFromParcel(Parcel in) {
 			return new Info(in);
 		}

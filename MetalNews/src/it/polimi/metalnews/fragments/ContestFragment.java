@@ -1,10 +1,11 @@
 package it.polimi.metalnews.fragments;
 
-import com.loopj.android.http.AsyncHttpClient;
-
-import it.polimi.metalnews.AlbumActivity;
+import it.polimi.metalnews.Info;
+import it.polimi.metalnews.NewsActivity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.loopj.android.http.AsyncHttpClient;
 
 
 public class ContestFragment extends InfoFragment {
@@ -34,9 +35,10 @@ public class ContestFragment extends InfoFragment {
 
 
 	@Override
-	protected void startIntentFromListViewElement(String response) {
-		Intent i=new Intent(getActivity(), AlbumActivity.class);
-		i.putExtra("albumHtml", response);
+	protected void startIntentFromListViewElement(String response, Info info) {
+		Intent i=new Intent(getActivity(), NewsActivity.class);
+		i.putExtra("info", info);
+		i.putExtra("newsHtml", response);
 		startActivity(i);
 		
 	}

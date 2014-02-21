@@ -29,8 +29,9 @@ public class NewsFragment extends InfoFragment{
 	}
 
 		@Override
-		protected void startIntentFromListViewElement(String response) {
+		protected void startIntentFromListViewElement(String response, Info info) {
 			Intent i=new Intent(getActivity(), NewsActivity.class);
+			i.putExtra("info", info);
 			i.putExtra("newsHtml", response);
 			startActivity(i);
 			
