@@ -39,18 +39,20 @@ public abstract class InfoFragment extends ListFragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 
-		AsyncHttpClient clientAlbum = new AsyncHttpClient();
-		clientAlbum.get(url,getAlbumResponseHandler());
 
-		setListShown(false);
 
 	}
 
 	public InfoFragment(String url) {
+		super();
 		this.url=url;
 	}
 
-	private AsyncHttpResponseHandler getAlbumResponseHandler(){
+	public InfoFragment(){
+		super();
+	}
+
+	protected AsyncHttpResponseHandler getAlbumContestResponseHandler(){
 
 		return new AsyncHttpResponseHandler() {			
 
@@ -61,53 +63,13 @@ public abstract class InfoFragment extends ListFragment {
 
 				info=getArrayInfoFromHtml(response);
 
-
-				NewsAdapter ada=new NewsAdapter(getActivity().getBaseContext(), info);
-				setListAdapter(ada);
-				getListView().setOnItemClickListener(new OnItemClickListener() {
-
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view, int position,
-							long id) {
-						// TODO Auto-generated method stub
-
-						AsyncHttpClient client = new AsyncHttpClient();
-						String url=info[position].getTargetUrl();
-
-						client.get(url,new AsyncHttpResponseHandler() {
-
-							public void onStart(){
-
-							}
-
-							@Override
-							public void onSuccess(String response) {
-
-
-								startIntentFromListViewElement(response);
-
-							}
-
-
-
-							@Override
-							public void onFailure(int statusCode,
-									org.apache.http.Header[] headers,
-									byte[] responseBody,
-									java.lang.Throwable error) {
-
-							}
-						});
-
-
-					}
-
-				});
+				setInfoAdapter();
 
 				setListShown(true);
 
 			}
 
+			
 			@Override
 			public void onFailure(int statusCode,
 					org.apache.http.Header[] headers,
@@ -120,10 +82,55 @@ public abstract class InfoFragment extends ListFragment {
 		};
 	}
 
+	
+	protected void setInfoAdapter() {
+		NewsAdapter ada=new NewsAdapter(getActivity().getBaseContext(), info);
+		setListAdapter(ada);
+		getListView().setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+
+				AsyncHttpClient client = new AsyncHttpClient();
+				String url=info[position].getTargetUrl();
+
+				client.get(url,new AsyncHttpResponseHandler() {
+
+					public void onStart(){
+
+					}
+
+					@Override
+					public void onSuccess(String response) {
+
+
+						startIntentFromListViewElement(response);
+
+					}
+
+
+
+					@Override
+					public void onFailure(int statusCode,
+							org.apache.http.Header[] headers,
+							byte[] responseBody,
+							java.lang.Throwable error) {
+
+					}
+				});
+
+
+			}
+
+		});
+	}
+
 
 	protected abstract void startIntentFromListViewElement(String response);
 
-	class NewsAdapter extends ArrayAdapter<Info> {
+	protected class NewsAdapter extends ArrayAdapter<Info> {
 		private final Context context;
 		private final Info[] values;
 
