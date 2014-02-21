@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.ActionBar;
@@ -17,6 +18,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -32,7 +34,9 @@ ActionBar.TabListener {
 
 	ViewPager mViewPager;
 	
-	News[] news;
+	private Info[] news;
+	private Info[] album;
+	private Info[] contests;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,27 +91,20 @@ ActionBar.TabListener {
 		}
 	}
 
-	public News[] getNewsFromIntent() {
-		Intent intent=getIntent();
+	public Info[] getNewsFromIntent() {
 
-		News[] news= new News[35];
-		String [] imageUrls = intent.getStringArrayExtra("imageUrls");
-		String [] titles = intent.getStringArrayExtra("titles");
-		String [] targetUrl = intent.getStringArrayExtra("targetUrl");
-		for(int cont=0;cont<35;cont++)
-		{
+		Info[] news = new Info[35];
+		Parcelable[] newsParc = getIntent().getExtras().getParcelableArray("news");
+		
+		int cont=0;
+		for(Parcelable x : newsParc){
 			
-			news[cont]=new News(titles[cont],imageUrls[cont], targetUrl[cont]);
-			
-			
-						
+			news[cont] = (Info) x;
+			cont++;
 		}
+	
 		return news;
-	}
-	
-	
-	
-	
+	}	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

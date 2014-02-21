@@ -1,5 +1,7 @@
 package it.polimi.metalnews;
 
+import java.util.ArrayList;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,14 +14,12 @@ import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -76,15 +76,31 @@ public class MainActivity extends Activity implements AnimationListener {
 
 		//controllo che il task sia andato a buon fine
 		if(isSucceded){
-			Intent intent = new Intent(MainActivity.this, HomeActivity.class);					
-			intent.putExtra("imageUrls", imageUrls);
-			intent.putExtra("titles", titles);
-			intent.putExtra("targetUrl", targetUrl);
+			
+			Info[] news = createInfoBundle(NEWS_LENGTH); 
+			
+			Intent intent = new Intent(this, HomeActivity.class);
+			
+			intent.putExtra("news", news);
+//			intent.putExtra("titles", titles);
+//			intent.putExtra("targetUrl", targetUrl);
 			startActivity(intent);
 		}else{
 
 			//gestisco la failure
 		}
+	}
+	
+	private Info[] createInfoBundle(int n){
+		
+		Info[] news = new Info[n];
+		
+		for(int cont=0;cont<35;cont++)
+		{			
+			news[cont]=new Info(titles[cont],imageUrls[cont], targetUrl[cont]);	
+		}
+		
+		return news;
 	}
 
 	@Override

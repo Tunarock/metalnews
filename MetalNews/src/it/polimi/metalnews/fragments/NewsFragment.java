@@ -2,7 +2,7 @@ package it.polimi.metalnews.fragments;
 
 import it.polimi.metalnews.ImageDownloader;
 import it.polimi.metalnews.ImageDownloaderNews;
-import it.polimi.metalnews.News;
+import it.polimi.metalnews.Info;
 import it.polimi.metalnews.NewsActivity;
 import it.polimi.metalnews.R;
 import android.content.Context;
@@ -30,7 +30,9 @@ public class NewsFragment extends ListFragment {
 //			return inflater.inflate(R.layout.listview_news, container, false);
 //		}
 
-	private News[] news;
+	private Info[] news;
+	private Info[] album;
+	private Info[] contests;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -82,7 +84,7 @@ public class NewsFragment extends ListFragment {
 		
 	}
 	
-	public NewsFragment(News[] news)
+	public NewsFragment(Info[] news)
 	{
 		super();
 		this.news=news;
@@ -90,11 +92,11 @@ public class NewsFragment extends ListFragment {
 	}
 
 	
-		class NewsAdapter extends ArrayAdapter<News> {
+		class NewsAdapter extends ArrayAdapter<Info> {
 			private final Context context;
-			private final News[] values;
+			private final Info[] values;
 
-			public NewsAdapter(Context context, News[] values) {
+			public NewsAdapter(Context context, Info[] values) {
 				super(context, R.layout.fragment_news, values);
 				this.context = context;
 				this.values = values;

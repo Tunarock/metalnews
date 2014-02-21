@@ -22,7 +22,7 @@ import android.widget.ImageView;
 
 public abstract class ImageDownloader extends AsyncTask<String, Void, Bitmap>  {
 	protected Bitmap image;
-	protected News[] news;
+	protected Info[] news;
 	protected int position;
 
 	public ImageDownloader() {

@@ -10,7 +10,7 @@ public class ImageDownloaderNews extends ImageDownloader {
 
 	protected final WeakReference imageViewReference;
 	
-	public ImageDownloaderNews(ImageView imageView, News[] news, int position) {
+	public ImageDownloaderNews(ImageView imageView, Info[] news, int position) {
 		super();
 		imageViewReference = new WeakReference(imageView);
 		this.position=position;
