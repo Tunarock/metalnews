@@ -1,7 +1,5 @@
 package it.polimi.metalnews;
 
-import java.util.ArrayList;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,6 +12,7 @@ import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -28,25 +27,32 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 public class MainActivity extends Activity implements AnimationListener {
 
 	private static final int NEWS_LENGTH = 35;
-	private static final String URL = "http://metalitalia.com/category/notizie/";
+	private static final String URL_NEWS = "http://metalitalia.com/category/notizie/";
+	private static final String URL_ALBUM = "http://metalitalia.com/category/album/";
+	private static final String URL_CONTEST = "http://metalitalia.com/category/contest/";
 	private static final int ANIMATION_TIME = 5000;
+	protected static final int ALBUM_CONTEST_LENGTH = 20;
 
-	String[] imageUrls= new String[NEWS_LENGTH];	
-	String[] titles = new String[NEWS_LENGTH];
-	String[] targetUrl = new String[NEWS_LENGTH];
+	private Info[] news;
+	private Info[] album;
+	private Info[] contests;
 
-	private AsyncHttpResponseHandler responseHandler;
-	private boolean isSucceded = false;
-	private AsyncHttpClient client;
-	
 	private TextView noConnectionText;
 	private Button noConnectionButton;
-	
+	protected boolean isSuccededAlbum ;
+	protected boolean isSuccededContest;
+	protected boolean isSuccededNews;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		isSuccededAlbum = false;
+		isSuccededContest= false;
+		isSuccededNews= false;
+
 		noConnectionText = (TextView) findViewById(R.id.no_connectiontext);
 		noConnectionText.setVisibility(View.GONE);
 		noConnectionButton = (Button) findViewById(R.id.no_connection);
@@ -58,11 +64,14 @@ public class MainActivity extends Activity implements AnimationListener {
 	private void initializeViews() throws NotFoundException {
 
 		ImageView ivLogo = (ImageView) findViewById(R.id.main_logo);
-		
+
 		if(isOnline()){
 			Animation animLogo = AnimationUtils.loadAnimation(this, R.anim.fadein);
 			animLogo.setAnimationListener(this);
 			ivLogo.startAnimation(animLogo);
+
+
+
 		}else{
 			ivLogo.setImageDrawable(getResources().getDrawable(R.drawable.noconnection));
 			noConnectionButton.setText("Attiva connessione");
@@ -74,33 +83,30 @@ public class MainActivity extends Activity implements AnimationListener {
 	@Override
 	public void onAnimationEnd(Animation animation) {
 
-		//controllo che il task sia andato a buon fine
-		if(isSucceded){
-			
-			Info[] news = createInfoBundle(NEWS_LENGTH); 
-			
-			Intent intent = new Intent(this, HomeActivity.class);
-			
-			intent.putExtra("news", news);
-//			intent.putExtra("titles", titles);
-//			intent.putExtra("targetUrl", targetUrl);
-			startActivity(intent);
-		}else{
-
-			//gestisco la failure
-		}
+		
 	}
-	
-	private Info[] createInfoBundle(int n){
+
+	private void startHome() {
 		
-		Info[] news = new Info[n];
-		
-		for(int cont=0;cont<35;cont++)
+		Intent intent = new Intent(this, HomeActivity.class);
+
+		intent.putExtra("news", news);
+		intent.putExtra("album", album);
+		intent.putExtra("contest", contests);
+
+		startActivity(intent);
+	}
+
+	private Info[] createInfoBundle(int n, String[] titles, String[] targetUrl, String[] imageUrls){
+
+		Info[] info = new Info[n];
+
+		for(int cont=0;cont<n;cont++)
 		{			
-			news[cont]=new Info(titles[cont],imageUrls[cont], targetUrl[cont]);	
+			info[cont]=new Info(titles[cont],imageUrls[cont], targetUrl[cont]);	
 		}
-		
-		return news;
+
+		return info;
 	}
 
 	@Override
@@ -111,11 +117,20 @@ public class MainActivity extends Activity implements AnimationListener {
 
 	@Override
 	public void onAnimationStart(Animation animation) {
-		
-			client = new AsyncHttpClient();
-			client.setTimeout(ANIMATION_TIME);
-			responseHandler = getNewResponseHandler() ;
-			client.get(URL,responseHandler);			
+
+		Log.i("SUCCESSTHREAD", "START-ANIMATION");
+
+		AsyncHttpClient clientNews = new AsyncHttpClient();
+		clientNews.setTimeout(ANIMATION_TIME);
+		clientNews.get(URL_NEWS,getNewsResponseHandler());
+
+		AsyncHttpClient clientContest = new AsyncHttpClient();
+		clientContest.setTimeout(ANIMATION_TIME);
+		clientContest.get(URL_CONTEST,getContestResponseHandler());
+
+		AsyncHttpClient clientAlbum = new AsyncHttpClient();
+		clientAlbum.setTimeout(ANIMATION_TIME);
+		clientAlbum.get(URL_ALBUM,getAlbumResponseHandler());
 
 	}
 
@@ -128,14 +143,26 @@ public class MainActivity extends Activity implements AnimationListener {
 		return false;
 	}
 
-	private AsyncHttpResponseHandler getNewResponseHandler(){
+	private AsyncHttpResponseHandler getNewsResponseHandler(){
 
 		return new AsyncHttpResponseHandler() {			
+
+			public void onStart(){
+
+				Log.i("SUCCESSTHREAD", "START-NEWS");
+
+			}
 
 			@Override
 			public void onSuccess(String response) {
 
-				isSucceded = true;
+				Log.i("SUCCESSTHREAD", "news");
+
+				
+
+				String[] imageUrls= new String[NEWS_LENGTH];	
+				String[] titles = new String[NEWS_LENGTH];
+				String[] targetUrl = new String[NEWS_LENGTH];
 
 				Document doc=Jsoup.parse(response);
 
@@ -153,6 +180,12 @@ public class MainActivity extends Activity implements AnimationListener {
 					i++;
 				}
 
+				news = createInfoBundle(NEWS_LENGTH, titles,targetUrl,imageUrls);
+
+				isSuccededNews = true;
+				if(isSuccededAlbum && isSuccededContest)
+					startHome();
+
 			}
 
 			@Override
@@ -162,10 +195,110 @@ public class MainActivity extends Activity implements AnimationListener {
 					java.lang.Throwable error) {
 
 				//DISPLAY A NOTIFICATION OR A BUTTON TO SAY THAT MAYBE WIRELESS IS NOT ACTIVATED
-
+				Log.i("FAILTHREAD", "news");
 
 			}
 		};
+	}
+
+	private AsyncHttpResponseHandler getAlbumResponseHandler(){
+
+		return new AsyncHttpResponseHandler() {			
+
+			public void onStart(){
+
+				Log.i("SUCCESSTHREAD", "START-ALBUM");
+
+			}
+
+			@Override
+			public void onSuccess(String response) {
+				Log.i("SUCCESSTHREAD", "album");
+				
+				album = getArrayInfoFromHtml(response);
+
+				isSuccededAlbum = true;
+				if(isSuccededContest && isSuccededNews)
+					startHome();
+
+			}
+
+			@Override
+			public void onFailure(int statusCode,
+					org.apache.http.Header[] headers,
+					byte[] responseBody,
+					java.lang.Throwable error) {
+
+				//DISPLAY A NOTIFICATION OR A BUTTON TO SAY THAT MAYBE WIRELESS IS NOT ACTIVATED
+				Log.i("FAILTHREAD", "album");
+
+			}
+		};
+	}
+
+	private AsyncHttpResponseHandler getContestResponseHandler(){
+
+		return new AsyncHttpResponseHandler() {			
+
+			public void onStart(){
+
+				Log.i("SUCCESSTHREAD", "START-CONTEST");
+
+			}
+
+			@Override
+			public void onSuccess(String response) {
+				Log.i("SUCCESSTHREAD", "contest");			
+
+				contests = getArrayInfoFromHtml(response);
+				isSuccededContest = true;
+				
+				if(isSuccededAlbum && isSuccededNews)
+					startHome();
+
+			}
+
+			@Override
+			public void onFailure(int statusCode,
+					org.apache.http.Header[] headers,
+					byte[] responseBody,
+					java.lang.Throwable error) {
+
+				//DISPLAY A NOTIFICATION OR A BUTTON TO SAY THAT MAYBE WIRELESS IS NOT ACTIVATED
+				Log.i("FAILTHREAD", "contest");
+
+			}
+		};
+	}
+
+	// restituisce solo array o di album o contest!!!!!
+	private Info[] getArrayInfoFromHtml(String response) {
+
+
+		String[] imageUrls= new String[ALBUM_CONTEST_LENGTH];	
+		String[] titles = new String[ALBUM_CONTEST_LENGTH];
+		String[] targetUrl = new String[ALBUM_CONTEST_LENGTH];
+
+		Document doc=Jsoup.parse(response);
+		Element link = doc.getElementById("recent-posts");
+
+		Elements blocks= link.getElementsByClass("entry");
+
+		int i=0;
+		for(Element block: blocks)
+		{
+			titles[i]=block.getElementsByClass("title").get(0).text();
+			targetUrl[i]=block.getElementsByClass("title").get(0).getElementsByTag("a").get(0).attr("href");
+			Elements elementsByTag = block.getElementsByTag("img");
+			if(elementsByTag.size()>0)
+				imageUrls[i]=elementsByTag.get(0).attr("src");					
+
+			i++;
+		}
+
+		Log.i("getdata", "getdata");
+
+		return createInfoBundle(ALBUM_CONTEST_LENGTH, titles,targetUrl,imageUrls);
 	}
 
 }

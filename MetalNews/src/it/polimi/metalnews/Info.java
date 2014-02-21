@@ -24,6 +24,9 @@ public class Info implements Parcelable{
 
 		StringBuilder str=new StringBuilder(completeTitle);
 		int endTitle=str.indexOf(":");
+		
+		if(endTitle == -1)
+			endTitle=str.indexOf("-");
 
 		this.title=str.substring(0, endTitle+1);
 		this.backtitle= str.substring(endTitle+2, str.length());
