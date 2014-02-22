@@ -1,7 +1,7 @@
 package it.polimi.metalnews.fragments;
 
+import it.polimi.metalnews.ContestActivity;
 import it.polimi.metalnews.Info;
-import it.polimi.metalnews.NewsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -36,9 +36,9 @@ public class ContestFragment extends InfoFragment {
 
 	@Override
 	protected void startIntentFromListViewElement(String response, Info info) {
-		Intent i=new Intent(getActivity(), NewsActivity.class);
+		Intent i=new Intent(getActivity(), ContestActivity.class);
 		i.putExtra("info", info);
-		i.putExtra("newsHtml", response);
+		i.putExtra("contestHtml", response);
 		startActivity(i);
 		
 	}

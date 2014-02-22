@@ -50,6 +50,7 @@ public class NewsActivity extends Activity {
 
 		Document doc = Jsoup.parse(content);
 
+	
 		Elements entryContent = doc.getElementsByClass(ENTRY_CONTENT);
 
 		Elements paragraphs = entryContent.get(0).getElementsByTag("p"); 
