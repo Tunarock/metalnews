@@ -3,10 +3,7 @@
     android:id="@+id/album_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background_grad"
     tools:context=".AlbumActivity" >
 
     <ImageView
@@ -15,48 +12,159 @@
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="2dp"
-        android:scaleType="fitStart"
-        android:src="@drawable/album" />
+        android:background="@color/Black"
+        android:paddingBottom="5dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp"
+        android:src="@drawable/empty_element" />
 
-    <TextView
-        android:id="@+id/album_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/album_img"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/album_img"
-        android:background="@drawable/background_album_voices"
-        android:paddingLeft="5dp"
-        android:paddingRight="10dp"
-        android:text="OPERA ROCK"
-        android:textSize="25sp"
-        android:textColor="@color/White" />
+        android:background="@color/Black"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp" >
 
-    <TextView
-        android:id="@+id/grade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/album_img"
-        android:layout_toRightOf="@+id/album_img"
-        android:background="@drawable/background_album_voices"
-        android:paddingLeft="5dp"
-        android:paddingRight="10dp"
-        android:textSize="15sp"
-        android:text="6.5"
-        android:textColor="@color/White" />
+        <TextView
+            android:id="@+id/album_title"
+            style="@style/greenLabels"
+            android:layout_weight="25"
+            android:textSize="25sp" />
 
-    <TextView
-        android:id="@+id/album_backtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/album_title"
-        android:layout_marginTop="16dp"
-        android:layout_toRightOf="@+id/album_img"
-        android:background="@drawable/background_album_voices"
-        android:paddingLeft="5dp"
-        android:paddingRight="10dp"
-        android:text="Starborn"
-        android:textColor="@color/White"
-        android:textSize="15sp" />
+        <TextView
+            android:id="@+id/album_backtitle"
+            style="@style/greenLabels"
+            android:layout_marginTop="5dp"
+            android:layout_weight="20"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/album_grade_publisher_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="15"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/album_grade"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:background="@drawable/background_album_voices"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textColor="@color/White"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/album_publisher"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:gravity="bottom|right"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:singleLine="true"
+                android:text="Pubblicato da:"
+                android:textAlignment="textStart"
+                android:textColor="@color/White"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/album_scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/album_img" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/album_review_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/background_grad_expandables"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:text="Recensione"
+                android:textColor="@color/Black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/album_review_content"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/album_review_title"
+                android:minLines="8"
+                android:paddingBottom="2dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="2dp"
+                android:text="lorem ipsum" />
+
+            <TextView
+                android:id="@+id/album_tracklist_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/album_review_content"
+                android:background="@drawable/background_grad_expandables"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:text="Tracklist"
+                android:textColor="@color/Black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/album_tracklist_content"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/album_tracklist_title"
+                android:minLines="8"
+                android:paddingBottom="2dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="2dp"
+                android:text="lorem ipsum" />
+
+            <ImageView
+                android:id="@+id/album_review_collapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/album_tracklist_title"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_action_expand" />
+
+            <ImageView
+                android:id="@+id/album_tracklist_collapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_action_expand" />
+            
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
