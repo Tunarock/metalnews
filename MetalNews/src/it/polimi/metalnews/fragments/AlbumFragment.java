@@ -13,11 +13,10 @@ import android.os.Bundle;
 public class AlbumFragment extends InfoFragment {
 
 
-	protected static final int ALBUM_CONTEST_LENGTH = 20;
-	
-	
-	public AlbumFragment(String url) {
-		super(url);
+	protected static final int ALBUM_LENGTH = 20;
+
+	public AlbumFragment(String urlAlbum, int albumLength) {
+		super(urlAlbum,albumLength);
 	}
 
 

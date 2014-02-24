@@ -10,11 +10,13 @@ import com.loopj.android.http.AsyncHttpClient;
 
 public class ContestFragment extends InfoFragment {
 
+	private static final int ALBUM_LENGTH = 20;
+	
+	
+	public ContestFragment(String urlContest, int contestLength) {
+		super(urlContest, contestLength);
+	}
 
-	
-	protected static final int ALBUM_CONTEST_LENGTH = 20;
-	
-	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -27,12 +29,6 @@ public class ContestFragment extends InfoFragment {
 		setListShown(false);
 		
 	}
-	
-	
-	public ContestFragment(String url) {
-		super(url);
-	}
-
 
 	@Override
 	protected void startIntentFromListViewElement(String response, Info info) {

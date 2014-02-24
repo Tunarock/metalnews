@@ -33,7 +33,7 @@ ActionBar.TabListener {
 	private static final int NEWS_LENGTH = 35;
 	private static final int ALBUM_CONTEST_LENGTH = 20;
 	private static final String URL_CONTEST = "http://metalitalia.com/category/contest/";
-
+	private static final String URL_NEWS = "http://metalitalia.com/category/notizie/";
 	private static final String URL_ALBUM = "http://metalitalia.com/category/album/";
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
@@ -95,6 +95,11 @@ ActionBar.TabListener {
 		}
 	}
 
+	@Override
+	public void onBackPressed() {
+	    
+	}
+	
 	public Info[] getNewsFromIntent(String tag, int n) {
 
 		Info[] news = new Info[n];
@@ -161,13 +166,13 @@ ActionBar.TabListener {
 
 			case 0:
 
-				fragment=new NewsFragment(getNewsFromIntent("news", NEWS_LENGTH ));
+				fragment=new NewsFragment(getNewsFromIntent("news", NEWS_LENGTH ),URL_NEWS, NEWS_LENGTH);
 				break;
 			case 1:
-				fragment=new AlbumFragment(URL_ALBUM);
+				fragment=new AlbumFragment(URL_ALBUM,ALBUM_CONTEST_LENGTH);
 				break;
 			case 2:
-				fragment=new ContestFragment(URL_CONTEST);
+				fragment=new ContestFragment(URL_CONTEST,ALBUM_CONTEST_LENGTH);
 				break;
 			}
 

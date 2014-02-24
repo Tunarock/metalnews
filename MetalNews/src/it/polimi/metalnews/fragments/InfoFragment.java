@@ -1,17 +1,17 @@
 package it.polimi.metalnews.fragments;
 
+import it.polimi.metalnews.ImageDownloader;
+import it.polimi.metalnews.ImageDownloaderNews;
+import it.polimi.metalnews.Info;
+import it.polimi.metalnews.R;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import it.polimi.metalnews.AlbumActivity;
-import it.polimi.metalnews.ImageDownloader;
-import it.polimi.metalnews.ImageDownloaderNews;
-import it.polimi.metalnews.Info;
-import it.polimi.metalnews.R;
 import android.content.Context;
-import android.content.Intent;
+import android.net.UrlQuerySanitizer.ValueSanitizer;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -21,7 +21,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -30,26 +33,31 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public abstract class InfoFragment extends ListFragment {
 
-	protected static final int ALBUM_CONTEST_LENGTH = 20;
+	
 	protected Info[] info;
+	protected Info[] moreInfo;
 	protected String url;
+	protected int page;
+	protected int size;
+	protected static final String PAGE_SUFFIX = "page/";
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-
-
+		super.onActivityCreated(savedInstanceState);		
 
 	}
 
-	public InfoFragment(String url) {
+	public InfoFragment(String url,int size) {
 		super();
 		this.url=url;
+		this.size=size;
+		page = 1;
 	}
 
 	public InfoFragment(){
 		super();
+		page = 1;
 	}
 
 	protected AsyncHttpResponseHandler getAlbumContestResponseHandler(){
@@ -84,6 +92,12 @@ public abstract class InfoFragment extends ListFragment {
 
 
 	protected void setInfoAdapter() {
+
+		View view = getActivity().getLayoutInflater().inflate(R.layout.more_content, null);
+		//	    TextView textinlfated = (TextView) view.findViewById(R.id.more_content);
+		ListView lv = getListView();
+		lv.addFooterView(view);
+
 		NewsAdapter ada=new NewsAdapter(getActivity().getBaseContext(), info);
 		setListAdapter(ada);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
@@ -92,15 +106,24 @@ public abstract class InfoFragment extends ListFragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 
-				AsyncHttpClient client = new AsyncHttpClient();
-				String url=info[position].getTargetUrl();
-
-				client.get(url,new ListenerResponseHandler(position));
-
+				if(position<info.length){
+					AsyncHttpClient client = new AsyncHttpClient();
+					String url=info[position].getTargetUrl();
+					client.get(url,new ListenerResponseHandler(position));
+				}else{
+					
+					ListView lv = getListView();
+					lv.removeFooterView(view);
+					getMoreContent();
+				}
 			}
+
+			
 		});
 	}
 
+	
+	
 	protected class ListenerResponseHandler extends AsyncHttpResponseHandler {
 
 		private int position;
@@ -120,7 +143,7 @@ public abstract class InfoFragment extends ListFragment {
 			startIntentFromListViewElement(response,info[position]);
 
 		}
-		
+
 		@Override
 		public void onFailure(int statusCode,
 				org.apache.http.Header[] headers,
@@ -130,13 +153,53 @@ public abstract class InfoFragment extends ListFragment {
 		}
 	}
 
+	private void getMoreContent() {
+		
+		AsyncHttpClient clientAlbum = new AsyncHttpClient();
+		clientAlbum.get(url+PAGE_SUFFIX+String.valueOf(++page),new AsyncHttpResponseHandler(){
+			
+			@Override
+			public void onSuccess(String response) {
 
+				moreInfo = getArrayInfoFromHtml(response);
+				mergeInfos();
+				setInfoAdapter();
+
+			}
+			
+		});
+	}
+	
+	private void mergeInfos(){
+		
+		int total_size = info.length+moreInfo.length;
+		
+		Info[] newInfo = new Info[total_size];
+		
+		int i;
+		for(i=0;i<info.length;i++){
+			newInfo[i]=info[i];
+		}
+		
+		for(int j=0;j<moreInfo.length;i++,j++){
+			newInfo[i]=moreInfo[j];
+		}
+		
+		info=newInfo;
+		
+	}
 
 	protected abstract void startIntentFromListViewElement(String response, Info info);
 
 	protected class NewsAdapter extends ArrayAdapter<Info> {
 		private final Context context;
-		private final Info[] values;
+		private Info[] values;
+		
+		protected void setValues(Info[] info){
+			
+			values=info;
+			notifyDataSetChanged();
+		}
 
 		public NewsAdapter(Context context, Info[] values) {
 			super(context, R.layout.fragment_info, values);
@@ -169,10 +232,12 @@ public abstract class InfoFragment extends ListFragment {
 
 			return rowView;
 		}
+		
+		
 
 	}
 
-	private Info[] createInfoBundle(int n, String[] titles, String[] targetUrl, String[] imageUrls){
+	protected Info[] createInfoBundle(int n, String[] titles, String[] targetUrl, String[] imageUrls){
 
 		Info[] info = new Info[n];
 
@@ -187,9 +252,9 @@ public abstract class InfoFragment extends ListFragment {
 	protected Info[] getArrayInfoFromHtml(String response) {
 
 
-		String[] imageUrls= new String[ALBUM_CONTEST_LENGTH];	
-		String[] titles = new String[ALBUM_CONTEST_LENGTH];
-		String[] targetUrl = new String[ALBUM_CONTEST_LENGTH];
+		String[] imageUrls= new String[size];	
+		String[] titles = new String[size];
+		String[] targetUrl = new String[size];
 
 		Document doc=Jsoup.parse(response);
 		Element link = doc.getElementById("recent-posts");
@@ -210,9 +275,7 @@ public abstract class InfoFragment extends ListFragment {
 
 		Log.i("getdata", "getdata");
 
-		return createInfoBundle(ALBUM_CONTEST_LENGTH, titles,targetUrl,imageUrls);
+		return createInfoBundle(size, titles,targetUrl,imageUrls);
 	}
-
-
 
 }

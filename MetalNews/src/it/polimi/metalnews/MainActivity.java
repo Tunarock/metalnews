@@ -12,8 +12,10 @@ import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -29,7 +31,7 @@ public class MainActivity extends Activity implements AnimationListener {
 	private static final int NEWS_LENGTH = 35;
 	private static final String URL_NEWS = "http://metalitalia.com/category/notizie/";
 
-
+	private static final int SET_ON_CONNECTION = 1;
 	private static final int ANIMATION_TIME = 5000;
 
 
@@ -51,12 +53,71 @@ public class MainActivity extends Activity implements AnimationListener {
 		noConnectionText.setVisibility(View.GONE);
 		noConnectionButton = (Button) findViewById(R.id.no_connection);
 		noConnectionButton.setVisibility(View.GONE);
+		noConnectionButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), SET_ON_CONNECTION);
+
+			}
+		});
+
 		initializeViews();
+
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		Log.i("LIFE", "resume");
+	}
+
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+
+		Log.i("LIFE", "pause");
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Log.i("LIFE", "stop");
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		Log.i("LIFE", "destroy");
+	}
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		Log.i("LIFE", "resultImmediate");
+
+		if(requestCode == SET_ON_CONNECTION){
+			if(resultCode == RESULT_OK){
+				Log.i("LIFE", "result");
+				checkConnection();
+			}
+		}
 
 	}
 
 	private void initializeViews() throws NotFoundException {
 
+		checkConnection();
+	}
+
+	private void checkConnection() {
 		ImageView ivLogo = (ImageView) findViewById(R.id.main_logo);
 
 		if(isOnline()){
@@ -68,7 +129,7 @@ public class MainActivity extends Activity implements AnimationListener {
 			ivLogo.setImageDrawable(getResources().getDrawable(R.drawable.noconnection));
 			noConnectionButton.setText("Attiva connessione");
 			noConnectionButton.setVisibility(View.VISIBLE);
-			noConnectionText.setVisibility(View.VISIBLE);	
+			noConnectionText.setVisibility(View.VISIBLE);			
 		}
 	}
 

@@ -39,7 +39,7 @@ public class ContestActivity extends Activity {
 		
 		
 		TextView title= (TextView) findViewById(R.id.contest_title);
-		title.setText(info.getTitle());
+		title.setText(info.getTitle()+ " " + info.getBacktitle());
 		
 		dispatch(contestHtml);
 	}
