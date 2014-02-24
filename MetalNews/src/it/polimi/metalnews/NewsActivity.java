@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -16,10 +15,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class NewsActivity extends Activity {
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
 
+public class NewsActivity extends YouTubeFailureRecoveryActivity implements OnInitializedListener {
+	
 	private static final String ENTRY_CONTENT = "entry-content";
 
+	private String id;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,8 @@ public class NewsActivity extends Activity {
 		{
 			analyzer(p, rl, li);
 		}
+		
+		
 
 	}
 
@@ -80,10 +88,45 @@ public class NewsActivity extends Activity {
 				ImageDownloadHtml imgDown= new ImageDownloadHtml(iv);
 				imgDown.execute(e.getElementsByTag("img").get(0).attr("src"));
 			}
+			else if(!e.getElementsByTag("iframe").isEmpty()){
+				String url=e.getElementsByTag("iframe").get(0).attr("src");
+				id=url.substring(29, 40);
+				
+				View view = li.inflate(R.layout.single_youtube, ll, false);
+				
+				YouTubePlayerView youTubeView = (YouTubePlayerView) view.findViewById(R.id.youtube_view);	  
+				ll.addView(view);
+				youTubeView.initialize(DeveloperKey.DEVELOPER_KEY,this);
+				
+			}
 
 
 		}
 
 
 	}
+
+	@Override
+	  public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
+	      boolean wasRestored) {
+	    if (!wasRestored) {
+	    	
+	      player.cueVideo(id);
+	    }
+	  }
+
+
+	@Override
+	public void onInitializationFailure(Provider arg0,
+			YouTubeInitializationResult arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected Provider getYouTubePlayerProvider() {
+	    return (YouTubePlayerView) findViewById(R.id.youtube_view);
+
+	}
+
 }

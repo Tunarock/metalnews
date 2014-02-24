@@ -15,5 +15,6 @@
     <string name="no_connection_text">Oops, nessuna connessione internet rilevata!</string>
     <string name="title_activity_album">AlbumActivity</string>
     <string name="title_activity_contest">ContestActivity</string>
+    <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
 
 </resources>
