@@ -4,19 +4,10 @@ import it.polimi.metalnews.fragments.AlbumFragment;
 import it.polimi.metalnews.fragments.ContestFragment;
 import it.polimi.metalnews.fragments.NewsFragment;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
@@ -25,6 +16,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.WindowManager;
 
 public class HomeActivity extends FragmentActivity implements
@@ -120,6 +112,23 @@ ActionBar.TabListener {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.home, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.refresh:
+	            openRefresh();
+	            return true;
+	       
+	    }
+		return false;
+	}
+
+	private void openRefresh() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

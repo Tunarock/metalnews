@@ -145,5 +145,6 @@
     <color name="GreenMetal">#00BF00</color>
     <color name="GreenDarkMetal">#002900</color>
     <color name="Transparent">#00FFFFFF</color>
+    <color name="DarkGreyMetal">#FF4D4D4D</color>
 
 </resources>
