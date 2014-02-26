@@ -114,7 +114,7 @@ public class MainActivity extends Activity implements AnimationListener {
 
 	private void initializeViews() throws NotFoundException {
 
-//		checkConnection();
+		checkConnection();
 	}
 
 	private void checkConnection() {

@@ -5,17 +5,25 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AlbumActivity extends Activity{
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.plus.PlusShare;
+
+public class AlbumActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 	Info info;
 
 	TextView title;
@@ -105,13 +113,6 @@ public class AlbumActivity extends Activity{
 		});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.album, menu);
-		return true;
-	}
-
 	private void parse(String content){
 
 		Document doc = Jsoup.parse(content);
@@ -139,5 +140,59 @@ public class AlbumActivity extends Activity{
 		grade.setText(str.substring(endTitle+2, str.length()));
 
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.news, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+		case R.id.gplus:
+			shareOnGPlus();
+			return true;
+
+		}
+		return false;
+	}
+
+	private void shareOnGPlus() {
+
+		// Launch the Google+ share dialog with attribution to your app.
+		Intent shareIntent = new PlusShare.Builder(this)
+		.setType("text/plain")
+		.setText("Welcome to the Google+ platform.")
+		.setContentUrl(Uri.parse(info.getTargetUrl()))
+		.getIntent();
+
+		startActivityForResult(shareIntent, 0);
+
+	}
+	
+	/* Client used to interact with Google APIs. */
+	private GoogleApiClient mGoogleApiClient;
+
+	@Override
+	public void onConnectionFailed(ConnectionResult result) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onConnected(Bundle connectionHint) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onConnectionSuspended(int cause) {
+		// TODO Auto-generated method stub
+
+	}
+
 
 }
