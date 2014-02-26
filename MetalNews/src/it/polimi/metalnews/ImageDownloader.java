@@ -1,8 +1,6 @@
 package it.polimi.metalnews;
 
 import java.io.InputStream;
-import java.lang.ref.WeakReference;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -10,15 +8,9 @@ import org.apache.http.client.methods.HttpGet;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
-import android.text.Html.ImageGetter;
 import android.util.Log;
-import android.widget.ImageView;
 
 public abstract class ImageDownloader extends AsyncTask<String, Void, Bitmap>  {
 	protected Bitmap image;

@@ -9,7 +9,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,6 +30,7 @@ public class UrlImageParser implements ImageGetter {
 		this.container = t;
 	}
 
+	@Override
 	public Drawable getDrawable(String source) {
 		UrlDrawable urlDrawable = new UrlDrawable();
 

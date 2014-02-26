@@ -3,7 +3,6 @@ package it.polimi.metalnews;
 import java.lang.ref.WeakReference;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 public class ImageDownloaderNews extends ImageDownloader {

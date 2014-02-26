@@ -114,7 +114,7 @@ public class MainActivity extends Activity implements AnimationListener {
 
 	private void initializeViews() throws NotFoundException {
 
-		checkConnection();
+//		checkConnection();
 	}
 
 	private void checkConnection() {
@@ -198,6 +198,7 @@ public class MainActivity extends Activity implements AnimationListener {
 
 		return new AsyncHttpResponseHandler() {			
 
+			@Override
 			public void onStart(){
 
 				Log.i("SUCCESSTHREAD", "START-NEWS");

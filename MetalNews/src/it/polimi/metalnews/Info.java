@@ -41,10 +41,12 @@ public class Info implements Parcelable{
 
 	public static final Parcelable.Creator<Info> CREATOR = new Parcelable.Creator<Info>() {
 
+		@Override
 		public Info createFromParcel(Parcel in) {
 			return new Info(in);
 		}
 
+		@Override
 		public Info[] newArray(int size) {
 			return new Info[size];
 		}

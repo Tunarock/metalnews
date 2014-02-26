@@ -5,17 +5,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class AlbumActivity extends Activity{
@@ -27,6 +24,7 @@ public class AlbumActivity extends Activity{
 	TextView publisher;
 	TextView review_content;
 	TextView tracklist_content;
+	
 	ImageView img;
 
 	private static final String ENTRY_CONTENT = "entry-content";
