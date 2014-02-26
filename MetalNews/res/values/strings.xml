@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_gplus">Share GooglePlus</string>
+    <string name="action_fb">Share Facebook</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -18,5 +19,6 @@
     <string name="title_activity_album">AlbumActivity</string>
     <string name="title_activity_contest">ContestActivity</string>
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
+    <string name="app_id">1468249036731724</string>
 
 </resources>

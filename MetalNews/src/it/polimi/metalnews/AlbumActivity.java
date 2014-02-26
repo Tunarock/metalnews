@@ -155,9 +155,17 @@ public class AlbumActivity extends Activity implements ConnectionCallbacks, OnCo
 		case R.id.gplus:
 			shareOnGPlus();
 			return true;
+		case R.id.fb:
+			shareFacebook();
+			return true;
 
 		}
 		return false;
+	}
+
+	private void shareFacebook() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void shareOnGPlus() {

@@ -1,5 +1,8 @@
 package it.polimi.metalnews;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,11 +11,16 @@ import org.jsoup.select.Elements;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,6 +55,22 @@ public class MainActivity extends Activity implements AnimationListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		 try {
+		        PackageInfo info = getPackageManager().getPackageInfo(
+		                "it.polimi.metalnews", PackageManager.GET_SIGNATURES);
+		        for (Signature signature : info.signatures) {
+		            MessageDigest md = MessageDigest.getInstance("SHA");
+		            md.update(signature.toByteArray());
+		            Log.d("KeyHash:",Base64.encodeToString(md.digest(), Base64.DEFAULT));
+
+
+		        }
+		    } catch (NameNotFoundException e) {
+
+		    } catch (NoSuchAlgorithmException e) {
+
+		    }
+		
 		isSuccededNews= false;
 
 		noConnectionText = (TextView) findViewById(R.id.no_connectiontext);

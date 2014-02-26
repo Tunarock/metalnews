@@ -79,9 +79,17 @@ public class ContestActivity extends Activity implements OnInitializedListener, 
 		case R.id.gplus:
 			shareOnGPlus();
 			return true;
+		case R.id.fb:
+			shareFacebook();
+			return true;
 
 		}
 		return false;
+	}
+
+	private void shareFacebook() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void dispatch(String content){

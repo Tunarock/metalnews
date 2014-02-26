@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.Session;
+import com.facebook.Session.StatusCallback;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -34,13 +40,24 @@ public class NewsActivity extends YouTubeFailureRecoveryActivity implements OnIn
 	private static final String ENTRY_CONTENT = "entry-content";
 
 	private String id;
-
+	private UiLifecycleHelper uiHelper;
 	private Info info;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_news);
+
+		uiHelper = new UiLifecycleHelper(this, new StatusCallback() {
+			
+			@Override
+			public void call(Session session, SessionState state, Exception exception) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		uiHelper.onCreate(savedInstanceState);
 
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
@@ -58,6 +75,30 @@ public class NewsActivity extends YouTubeFailureRecoveryActivity implements OnIn
 		dispatch(newsHtml);
 
 
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		uiHelper.onResume();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		uiHelper.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		uiHelper.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		uiHelper.onDestroy();
 	}
 
 	protected void onStart() {
@@ -87,9 +128,43 @@ public class NewsActivity extends YouTubeFailureRecoveryActivity implements OnIn
 		case R.id.gplus:
 			shareOnGPlus();
 			return true;
+		case R.id.fb:
+			shareFacebook();
+			return true;
 
 		}
 		return false;
+	}
+
+	private void shareFacebook() {
+		if (FacebookDialog.canPresentShareDialog(getApplicationContext(), 
+				FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
+			// Publish the post using the Share Dialog
+			FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+			.setLink(info.getTargetUrl())
+			.build();
+			uiHelper.trackPendingDialogCall(shareDialog.present());
+
+		} else {
+			// Fallback. For example, publish the post using the Feed Dialog
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+			@Override
+			public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+				Log.e("Activity", String.format("Error: %s", error.toString()));
+			}
+
+			@Override
+			public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+				Log.i("Activity", "Success!");
+			}
+		});
 	}
 
 	private void shareOnGPlus() {
