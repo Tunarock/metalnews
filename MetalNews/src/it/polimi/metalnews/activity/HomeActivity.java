@@ -1,5 +1,7 @@
-package it.polimi.metalnews;
+package it.polimi.metalnews.activity;
 
+import it.polimi.metalnews.Info;
+import it.polimi.metalnews.R;
 import it.polimi.metalnews.fragments.AlbumFragment;
 import it.polimi.metalnews.fragments.ContestFragment;
 import it.polimi.metalnews.fragments.NewsFragment;
@@ -15,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -37,7 +40,7 @@ ActionBar.TabListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		Log.i("LIFE", "HOME - create");
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -86,7 +89,47 @@ ActionBar.TabListener {
 					.setTabListener(this));
 		}
 	}
+	
 
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+
+		Log.i("LIFE", "HOME - start");
+	}
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		Log.i("LIFE", "HOME - resume");
+	}
+
+
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+
+		Log.i("LIFE", "HOME - pause");
+	}
+
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Log.i("LIFE", "HOME - stop");
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		Log.i("LIFE", "HOME - destroy");
+	}
+	
 	@Override
 	public void onBackPressed() {
 	    
@@ -176,12 +219,15 @@ ActionBar.TabListener {
 			case 0:
 
 				fragment=new NewsFragment(getNewsFromIntent("news", NEWS_LENGTH ),URL_NEWS, NEWS_LENGTH);
+			
 				break;
 			case 1:
 				fragment=new AlbumFragment(URL_ALBUM,ALBUM_CONTEST_LENGTH);
+				
 				break;
 			case 2:
 				fragment=new ContestFragment(URL_CONTEST,ALBUM_CONTEST_LENGTH);
+				
 				break;
 			}
 

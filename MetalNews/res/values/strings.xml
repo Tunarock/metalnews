@@ -20,5 +20,6 @@
     <string name="title_activity_contest">ContestActivity</string>
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
     <string name="app_id">1468249036731724</string>
+    <string name="title_activity_info">InfoActivity</string>
 
 </resources>

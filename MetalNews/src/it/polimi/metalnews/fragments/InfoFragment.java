@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,8 +42,47 @@ public abstract class InfoFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);		
+		super.onActivityCreated(savedInstanceState);
+		if(savedInstanceState != null)
+			resumeState(savedInstanceState);
 
+	}
+	
+	private void resumeState(Bundle savedInstanceState) {
+		
+		info = getInfoFromParcelable(savedInstanceState.getParcelableArray("info"));
+		moreInfo = getInfoFromParcelable(savedInstanceState.getParcelableArray("moreInfo"));
+		url = savedInstanceState.getString("url");
+		size = savedInstanceState.getInt("size");
+		page = savedInstanceState.getInt("page");
+		
+	}
+	
+	private Info[] getInfoFromParcelable(Parcelable[] newsParc) {
+
+		if (newsParc!=null) {
+			
+			Info[] info = new Info[newsParc.length];
+			
+			int cont = 0;
+			for (Parcelable x : newsParc) {
+
+				info[cont] = (Info) x;
+				cont++;
+			}
+			return info;
+		}
+		
+		return null;
+	}	
+
+	public void onSaveInstanceState (Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putParcelableArray("info", info);
+		outState.putParcelableArray("moreInfo", moreInfo);
+		outState.putInt("page", page);
+		outState.putInt("size", size);
+		outState.putString("url", url);
 	}
 
 	public InfoFragment(String url,int size) {
@@ -53,7 +93,7 @@ public abstract class InfoFragment extends ListFragment {
 	}
 
 	public InfoFragment(){
-		super();
+		
 		page = 1;
 	}
 
@@ -104,9 +144,7 @@ public abstract class InfoFragment extends ListFragment {
 					long id) {
 
 				if(position<info.length){
-					AsyncHttpClient client = new AsyncHttpClient();
-					String url=info[position].getTargetUrl();
-					client.get(url,new ListenerResponseHandler(position));
+					startIntentFromListViewElement(info[position]);
 				}else{
 					
 					ListView lv = getListView();
@@ -117,38 +155,6 @@ public abstract class InfoFragment extends ListFragment {
 
 			
 		});
-	}
-
-	
-	
-	protected class ListenerResponseHandler extends AsyncHttpResponseHandler {
-
-		private int position;
-
-		public ListenerResponseHandler(int position){
-
-			this.position = position;
-		}
-
-		@Override
-		public void onStart(){
-
-		}
-
-		@Override
-		public void onSuccess(String response) {
-
-			startIntentFromListViewElement(response,info[position]);
-
-		}
-
-		@Override
-		public void onFailure(int statusCode,
-				org.apache.http.Header[] headers,
-				byte[] responseBody,
-				java.lang.Throwable error) {
-
-		}
 	}
 
 	private void getMoreContent() {
@@ -187,7 +193,7 @@ public abstract class InfoFragment extends ListFragment {
 		
 	}
 
-	protected abstract void startIntentFromListViewElement(String response, Info info);
+	protected abstract void startIntentFromListViewElement(Info info);
 
 	protected class NewsAdapter extends ArrayAdapter<Info> {
 		private final Context context;
