@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -60,6 +61,15 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
+		getActionBar().setTitle(R.string.app_name);
+		
+		Bundle bundle = getIntent().getExtras();
+		info=(Info)bundle.getParcelable("info");
+		
 		setLayout();
 
 		setUiHelper(savedInstanceState);
@@ -68,8 +78,7 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 		
 //		String newsHtml = getIntent().getStringExtra("newsHtml");
 
-		Bundle bundle = getIntent().getExtras();
-		info=(Info)bundle.getParcelable("info");
+		
 
 		getInfoFromHtml();
 
