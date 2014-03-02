@@ -38,6 +38,7 @@ public abstract class InfoFragment extends ListFragment {
 	protected int page;
 	protected int size;
 	protected static final String PAGE_SUFFIX = "page/";
+	protected boolean isFragmentResumed;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public abstract class InfoFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		if(savedInstanceState != null)
 			resumeState(savedInstanceState);
+//		Log
 
 	}
 	
@@ -78,6 +80,9 @@ public abstract class InfoFragment extends ListFragment {
 
 	public void onSaveInstanceState (Bundle outState){
 		super.onSaveInstanceState(outState);
+		
+		Log.i("LIFE", "INFO - saved");
+		
 		outState.putParcelableArray("info", info);
 		outState.putParcelableArray("moreInfo", moreInfo);
 		outState.putInt("page", page);
@@ -90,11 +95,19 @@ public abstract class InfoFragment extends ListFragment {
 		this.url=url;
 		this.size=size;
 		page = 1;
+		isFragmentResumed=false;
 	}
 
 	public InfoFragment(){
-		
+		isFragmentResumed=false;
 		page = 1;
+	}
+	
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		isFragmentResumed = true;
 	}
 
 	protected AsyncHttpResponseHandler getAlbumContestResponseHandler(){
@@ -107,7 +120,7 @@ public abstract class InfoFragment extends ListFragment {
 
 
 				info=getArrayInfoFromHtml(response);
-
+				Log.i("LIFE", "INFO - success");
 				setInfoAdapter();
 
 				setListShown(true);

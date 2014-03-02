@@ -29,33 +29,34 @@ public class AlbumFragment extends InfoFragment {
 		Intent i=new Intent(getActivity(), AlbumActivity.class);
 		i.putExtra("info", info);
 		startActivity(i);
-		
+
 	}
-	
+
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		Log.i("LIFE", "ALBUM - onActivityCreated");
+		if(!isFragmentResumed){
+			AsyncHttpClient clientAlbum = new AsyncHttpClient();
+			clientAlbum.get(url,getAlbumContestResponseHandler());
 
+			setListShown(false);
+		}
 
-		AsyncHttpClient clientAlbum = new AsyncHttpClient();
-		clientAlbum.get(url,getAlbumContestResponseHandler());
-
-		setListShown(false);
-		
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		Log.i("LIFE", "ALBUM - onCreateView");
 		return super.onCreateView(inflater, container, savedInstanceState);
-		
+
 	}
-	
-	
+
+
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub

@@ -20,11 +20,12 @@ public class NewsFragment extends InfoFragment{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-
-		setInfoAdapter();
-
+		if(!isFragmentResumed){
+			Log.i("LIFE", "NEWS - onActivityCreated");
+			setInfoAdapter();
+		}
 	}
-	
+
 	public NewsFragment(){
 		super();
 	}

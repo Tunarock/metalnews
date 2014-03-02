@@ -13,11 +13,11 @@ import com.loopj.android.http.AsyncHttpClient;
 
 
 public class ContestFragment extends InfoFragment {
-	
+
 	public ContestFragment(String urlContest, int contestLength) {
 		super(urlContest, contestLength);
 	}
-	
+
 	public ContestFragment(){
 		super();
 	}
@@ -26,13 +26,13 @@ public class ContestFragment extends InfoFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		Log.i("LIFE", "CONTEST - onActivityCreated");
+		if(!isFragmentResumed){
+			AsyncHttpClient clientAlbum = new AsyncHttpClient();
+			clientAlbum.get(url,getAlbumContestResponseHandler());
 
-
-		AsyncHttpClient clientAlbum = new AsyncHttpClient();
-		clientAlbum.get(url,getAlbumContestResponseHandler());
-
-		setListShown(false);
-		
+			setListShown(false);
+		}
 	}
 
 	@Override
@@ -40,19 +40,19 @@ public class ContestFragment extends InfoFragment {
 		Intent i=new Intent(getActivity(), ContestActivity.class);
 		i.putExtra("info", info);
 		startActivity(i);
-		
+
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		Log.i("LIFE", "CONTEST - onCreateView");
 		return super.onCreateView(inflater, container, savedInstanceState);
-		
+
 	}
-	
-	
+
+
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
@@ -91,6 +91,6 @@ public class ContestFragment extends InfoFragment {
 		super.onDestroy();
 		Log.i("LIFE", "CONTEST - destroy");
 	}
-	
+
 
 }
