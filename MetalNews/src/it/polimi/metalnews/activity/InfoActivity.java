@@ -89,14 +89,16 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 	
 	protected void analyzer (Element e, LinearLayout ll, LayoutInflater li){
 
+		View view;
+		
 		if(e.hasText()){
-			View view = li.inflate(R.layout.single_text_element, ll, false);
+			view = li.inflate(R.layout.single_text_element, ll, false);
 			TextView tw= (TextView) view.findViewById(R.id.text);
 			tw.setText(Html.fromHtml(e.html(), null ,null));
 			ll.addView(tw);			
 		}else{
 			if(!e.getElementsByTag("img").isEmpty()){
-				View view = li.inflate(R.layout.single_image_element, ll, false);
+				view = li.inflate(R.layout.single_image_element, ll, false);
 				ImageView iv= (ImageView) view.findViewById(R.id.img);
 				ll.addView(iv);
 				ImageDownloadHtml imgDown= new ImageDownloadHtml(iv);
@@ -106,7 +108,7 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 				String url=e.getElementsByTag("iframe").get(0).attr("src");
 				id=url.substring(29, 40);
 
-				View view = li.inflate(R.layout.single_youtube, ll, false);
+				view = li.inflate(R.layout.single_youtube, ll, false);
 
 				YouTubePlayerView youTubeView = (YouTubePlayerView) view.findViewById(R.id.youtube_view);	  
 				ll.addView(view);

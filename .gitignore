@@ -27,3 +27,6 @@ proguard/
 *.ipr
 *.iws
 .idea/
+MetalNews/libs/android-support-v4.jar
+MetalNews/project.properties
+MetalNews/project.properties
