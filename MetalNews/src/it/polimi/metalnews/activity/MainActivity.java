@@ -2,10 +2,7 @@ package it.polimi.metalnews.activity;
 
 import it.polimi.metalnews.Info;
 import it.polimi.metalnews.R;
-import it.polimi.metalnews.R.anim;
-import it.polimi.metalnews.R.drawable;
-import it.polimi.metalnews.R.id;
-import it.polimi.metalnews.R.layout;
+import it.polimi.metalnews.StartTimer;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -49,7 +46,6 @@ public class MainActivity extends Activity implements AnimationListener {
 	private static final int SET_ON_CONNECTION = 1;
 	private static final int ANIMATION_TIME = 5000;
 
-
 	private Info[] news;
 
 	private TextView noConnectionText;
@@ -62,6 +58,8 @@ public class MainActivity extends Activity implements AnimationListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		
+		
 		 try {
 		        PackageInfo info = getPackageManager().getPackageInfo(
 		                "it.polimi.metalnews", PackageManager.GET_SIGNATURES);
@@ -135,8 +133,12 @@ public class MainActivity extends Activity implements AnimationListener {
 	@Override
 	public void onAnimationEnd(Animation animation) {
 
-		if(isSuccededNews)
+		if(isSuccededNews){
+			Intent intent=new Intent(this, StartTimer.class);
+			intent.putExtra("lastTitle", news[0].getTitle());
+			startService(intent);
 			startHome();
+		}
 		else{
 			ImageView ivLogo = (ImageView) findViewById(R.id.main_logo);
 			ivLogo.setImageDrawable(getResources().getDrawable(R.drawable.noconnection));
@@ -234,6 +236,9 @@ public class MainActivity extends Activity implements AnimationListener {
 				news = createInfoBundle(NEWS_LENGTH, titles,targetUrl,imageUrls);
 
 				isSuccededNews = true;
+				
+				
+				
 
 
 			}
