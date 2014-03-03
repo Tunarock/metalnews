@@ -4,20 +4,16 @@ import it.polimi.metalnews.DeveloperKey;
 import it.polimi.metalnews.ImageDownloadHtml;
 import it.polimi.metalnews.Info;
 import it.polimi.metalnews.R;
-import it.polimi.metalnews.R.id;
-import it.polimi.metalnews.R.layout;
-import it.polimi.metalnews.R.menu;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,9 +25,9 @@ import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.Session.StatusCallback;
-import com.facebook.widget.FacebookDialog;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -40,14 +36,15 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.PlusShare;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implements OnInitializedListener,ConnectionCallbacks, OnConnectionFailedListener {
 
+	private ProgressDialog bar;
 	
 	protected Info info;
 	private String id;
@@ -62,6 +59,12 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		bar = ProgressDialog.show(this,"", "content loading");
+			
+        bar.getWindow().setGravity(Gravity.BOTTOM);
+        
+		setContentView(R.layout.background_black_logo);
+		
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
@@ -70,17 +73,11 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 		Bundle bundle = getIntent().getExtras();
 		info=(Info)bundle.getParcelable("info");
 		
-		setLayout();
-
+		getInfoFromHtml();
+		
 		setUiHelper(savedInstanceState);
 
 		setGoogleClient();
-		
-//		String newsHtml = getIntent().getStringExtra("newsHtml");
-
-		
-
-		getInfoFromHtml();
 
 
 	}
@@ -108,11 +105,13 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 				String url=e.getElementsByTag("iframe").get(0).attr("src");
 				id=url.substring(29, 40);
 
-				view = li.inflate(R.layout.single_youtube, ll, false);
-
-				YouTubePlayerView youTubeView = (YouTubePlayerView) view.findViewById(R.id.youtube_view);	  
-				ll.addView(view);
-				youTubeView.initialize(DeveloperKey.DEVELOPER_KEY,this);
+				if (isYouTubeUrl()) {
+					view = li.inflate(R.layout.single_youtube, ll, false);
+					YouTubePlayerView youTubeView = (YouTubePlayerView) view
+							.findViewById(R.id.youtube_view);
+					ll.addView(view);
+					youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
+				}
 
 			}
 
@@ -122,9 +121,15 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 
 	}
 		
+	private boolean isYouTubeUrl() {
+		// TODO Auto-generated method stub
+		return id.contains("youtube");
+	}
+
 	protected abstract void setLayout();
 	
 	protected void getInfoFromHtml(){
+		
 		
 		AsyncHttpClient client = new AsyncHttpClient();
 		
@@ -133,6 +138,8 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			@Override
 			public void onSuccess(String response) {
 
+				bar.dismiss();
+				setLayout();
 				parseResponse(response);
 
 			}
