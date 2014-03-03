@@ -4,9 +4,12 @@ import it.polimi.metalnews.Info;
 import it.polimi.metalnews.R;
 import it.polimi.metalnews.fragments.AlbumFragment;
 import it.polimi.metalnews.fragments.ContestFragment;
+import it.polimi.metalnews.fragments.InfoFragment;
 import it.polimi.metalnews.fragments.NewsFragment;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -56,8 +59,7 @@ ActionBar.TabListener {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		actionBar.setTitle(R.string.app_name);
-
-
+		
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -161,18 +163,21 @@ ActionBar.TabListener {
 	    // Handle presses on the action bar items
 	    switch (item.getItemId()) {
 	        case R.id.refresh:
-	            openRefresh();
+	            refresh();
 	            return true;
 	       
 	    }
 		return false;
 	}
 
-	private void openRefresh() {
-		// TODO Auto-generated method stub
+	private void refresh() {
+		
+		int currentIndex = mViewPager.getCurrentItem();
+		InfoFragment infoFragment = ((SectionsPagerAdapter)mViewPager.getAdapter()).getFragment(currentIndex);
+		infoFragment.refreshList();
 		
 	}
-
+	
 	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
@@ -198,6 +203,8 @@ ActionBar.TabListener {
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		private static final int NUMBER_OF_FRAGMENT = 3;
+		
+		private Map<Integer, InfoFragment> mPageReferenceMap = new HashMap<Integer, InfoFragment>();
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -211,21 +218,25 @@ ActionBar.TabListener {
 
 			ListFragment fragment=null;
 
-
+			
+			
 			switch(position)
 			{
 
 			case 0:
 
 				fragment=new NewsFragment(getNewsFromIntent("news", NEWS_LENGTH ),URL_NEWS, NEWS_LENGTH);
+				mPageReferenceMap.put(Integer.valueOf(position), (InfoFragment) fragment);
 			
 				break;
 			case 1:
 				fragment=new AlbumFragment(URL_ALBUM,ALBUM_CONTEST_LENGTH);
+				mPageReferenceMap.put(Integer.valueOf(position), (InfoFragment) fragment);
 				
 				break;
 			case 2:
 				fragment=new ContestFragment(URL_CONTEST,ALBUM_CONTEST_LENGTH);
+				mPageReferenceMap.put(Integer.valueOf(position), (InfoFragment) fragment);
 				
 				break;
 			}
@@ -233,6 +244,11 @@ ActionBar.TabListener {
 			return fragment;
 		}
 
+		public InfoFragment getFragment(int key) {
+			
+			return mPageReferenceMap.get(key);
+		}
+		
 		@Override
 		public int getCount() {
 

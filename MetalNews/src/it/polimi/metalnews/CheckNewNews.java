@@ -80,7 +80,7 @@ public class CheckNewNews extends IntentService {
 				
 				Info i=new Info(title,null,null);
 				
-				if(lastTitle.compareTo(i.getTitle())!=0){
+				if(lastTitle.compareTo(i.getTitle())==0){
 					
 					//Ci sono nuove notizie
 					

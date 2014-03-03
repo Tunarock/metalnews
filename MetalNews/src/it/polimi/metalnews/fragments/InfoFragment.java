@@ -295,4 +295,24 @@ public abstract class InfoFragment extends ListFragment {
 		return createInfoBundle(size, titles,targetUrl,imageUrls);
 	}
 
+	public void refreshList() {
+		
+		AsyncHttpClient clientAlbum = new AsyncHttpClient();
+		clientAlbum.get(url,new AsyncHttpResponseHandler(){
+			
+			@Override
+			public void onSuccess(String response) {
+
+				Info[] newInfo = getArrayInfoFromHtml(response);
+				if(newInfo[0].getTargetUrl().compareTo(info[0].getTargetUrl())!=0){
+					info=newInfo;
+					setInfoAdapter();
+				}
+					
+			}
+			
+		});
+		
+	}
+
 }
