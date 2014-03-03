@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -92,6 +93,8 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			view = li.inflate(R.layout.single_text_element, ll, false);
 			TextView tw= (TextView) view.findViewById(R.id.text);
 			tw.setText(Html.fromHtml(e.html(), null ,null));
+			tw.setLinkTextColor(getResources().getColor(R.color.GreenMetal));
+			tw.setMovementMethod(LinkMovementMethod.getInstance());
 			ll.addView(tw);			
 		}else{
 			if(!e.getElementsByTag("img").isEmpty()){
@@ -104,8 +107,8 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			else if(!e.getElementsByTag("iframe").isEmpty()){
 				String url=e.getElementsByTag("iframe").get(0).attr("src");
 				id=url.substring(29, 40);
-
-				if (isYouTubeUrl()) {
+						
+				if (isYouTubeUrl(url)) {
 					view = li.inflate(R.layout.single_youtube, ll, false);
 					YouTubePlayerView youTubeView = (YouTubePlayerView) view
 							.findViewById(R.id.youtube_view);
@@ -121,9 +124,9 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 
 	}
 		
-	private boolean isYouTubeUrl() {
+	private boolean isYouTubeUrl(String url) {
 		// TODO Auto-generated method stub
-		return id.contains("youtube");
+		return url.contains("youtube");
 	}
 
 	protected abstract void setLayout();
