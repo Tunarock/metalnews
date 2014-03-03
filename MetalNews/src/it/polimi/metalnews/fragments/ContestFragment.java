@@ -32,6 +32,9 @@ public class ContestFragment extends InfoFragment {
 			clientAlbum.get(url,getAlbumContestResponseHandler());
 
 			setListShown(false);
+		}else {
+			
+			setInfoAdapter();
 		}
 	}
 
@@ -92,5 +95,11 @@ public class ContestFragment extends InfoFragment {
 		Log.i("LIFE", "CONTEST - destroy");
 	}
 
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		Log.i("LIFE", "CONTEST - destroyView");
+	}
 
 }

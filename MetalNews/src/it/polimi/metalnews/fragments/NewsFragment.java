@@ -20,10 +20,10 @@ public class NewsFragment extends InfoFragment{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		if(!isFragmentResumed){
+		
 			Log.i("LIFE", "NEWS - onActivityCreated");
 			setInfoAdapter();
-		}
+		
 	}
 
 	public NewsFragment(){
@@ -123,4 +123,12 @@ public class NewsFragment extends InfoFragment{
 		super.onDestroy();
 		Log.i("LIFE", "NEWS - destroy");
 	}
+	
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		Log.i("LIFE", "NEWS - destroyView");
+	}
+	
 }

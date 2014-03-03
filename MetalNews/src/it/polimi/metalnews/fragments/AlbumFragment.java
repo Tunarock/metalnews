@@ -43,6 +43,9 @@ public class AlbumFragment extends InfoFragment {
 			clientAlbum.get(url,getAlbumContestResponseHandler());
 
 			setListShown(false);
+//		}else if (savedInstanceState==null){
+//			
+//			setInfoAdapter();
 		}
 
 	}
@@ -94,6 +97,13 @@ public class AlbumFragment extends InfoFragment {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		Log.i("LIFE", "ALBUM - destroy");
+	}
+	
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		Log.i("LIFE", "ALBUM - destroyView");
 	}
 
 }

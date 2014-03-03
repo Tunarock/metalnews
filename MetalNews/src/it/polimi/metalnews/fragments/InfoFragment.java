@@ -109,6 +109,12 @@ public abstract class InfoFragment extends ListFragment {
 		super.onStop();
 		isFragmentResumed = true;
 	}
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		isFragmentResumed = false;
+	}
 
 	protected AsyncHttpResponseHandler getAlbumContestResponseHandler(){
 
@@ -146,7 +152,8 @@ public abstract class InfoFragment extends ListFragment {
 		View view = getActivity().getLayoutInflater().inflate(R.layout.more_content, null);
 		//	    TextView textinlfated = (TextView) view.findViewById(R.id.more_content);
 		ListView lv = getListView();
-		lv.addFooterView(view);
+		if(lv.getFooterViewsCount()==0)
+			lv.addFooterView(view);
 
 		NewsAdapter ada=new NewsAdapter(getActivity().getBaseContext(), info);
 		setListAdapter(ada);
