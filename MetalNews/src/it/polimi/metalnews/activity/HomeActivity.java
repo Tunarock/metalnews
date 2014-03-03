@@ -2,6 +2,7 @@ package it.polimi.metalnews.activity;
 
 import it.polimi.metalnews.Info;
 import it.polimi.metalnews.R;
+import it.polimi.metalnews.SettingActivity;
 import it.polimi.metalnews.fragments.AlbumFragment;
 import it.polimi.metalnews.fragments.ContestFragment;
 import it.polimi.metalnews.fragments.InfoFragment;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +24,7 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
@@ -33,6 +36,7 @@ ActionBar.TabListener {
 	private static final String URL_CONTEST = "http://metalitalia.com/category/contest/";
 	private static final String URL_NEWS = "http://metalitalia.com/category/notizie/";
 	private static final String URL_ALBUM = "http://metalitalia.com/category/album/";
+	private static final int RESULT_SETTINGS = 1;
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -150,7 +154,7 @@ ActionBar.TabListener {
 
 		return news;
 	}	
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -165,11 +169,29 @@ ActionBar.TabListener {
 	        case R.id.refresh:
 	            refresh();
 	            return true;
+	        
+	        case R.id.menu_settings:
+	            Intent i = new Intent(this, SettingActivity.class);
+	            startActivityForResult(i, RESULT_SETTINGS);
+	            return true;
 	       
 	    }
 		return false;
 	}
-
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+ 
+        switch (requestCode) {
+        case RESULT_SETTINGS:
+           
+            break;
+ 
+        }
+ 
+    }
+	
 	private void refresh() {
 		
 		int currentIndex = mViewPager.getCurrentItem();

@@ -1,5 +1,7 @@
 package it.polimi.metalnews.fragments;
 
+import java.io.OutputStreamWriter;
+
 import it.polimi.metalnews.ImageDownloader;
 import it.polimi.metalnews.ImageDownloaderNews;
 import it.polimi.metalnews.Info;
@@ -10,6 +12,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -39,6 +42,7 @@ public abstract class InfoFragment extends ListFragment {
 	protected int size;
 	protected static final String PAGE_SUFFIX = "page/";
 	protected boolean isFragmentResumed;
+	protected static final int ID_NOTIFICATION = 1;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -313,6 +317,21 @@ public abstract class InfoFragment extends ListFragment {
 				Info[] newInfo = getArrayInfoFromHtml(response);
 				if(newInfo[0].getTargetUrl().compareTo(info[0].getTargetUrl())!=0){
 					info=newInfo;
+					
+					try {
+						 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getActivity().openFileOutput("settings.txt", Context.MODE_PRIVATE));
+					     outputStreamWriter.write(info[0].getTitle());
+					     outputStreamWriter.close();
+					} catch (Exception e) {
+					  e.printStackTrace();
+					}
+					
+					NotificationManager mNotificationManager =
+						    (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+						mNotificationManager.cancel(ID_NOTIFICATION);
+					
+					
+					
 					setInfoAdapter();
 				}
 					
