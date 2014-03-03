@@ -19,7 +19,6 @@ public class Alarm extends BroadcastReceiver
 //         wl.acquire();
 
          Intent i=new Intent(context, CheckNewNews.class);
-         i.putExtra("lastTitle", intent.getStringExtra("lastTitle"));
          context.startService(i);
          
          Log.i("msg", "scattato");
@@ -27,13 +26,12 @@ public class Alarm extends BroadcastReceiver
 //         wl.release();
      }
 
- public void SetAlarm(Context context, String lastTitle)
+ public void SetAlarm(Context context)
  {
 	 CancelAlarm(context);
 	 
      AlarmManager am=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
      Intent i = new Intent(context, Alarm.class);
-     i.putExtra("lastTitle", lastTitle);
      PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
      am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60 * 5, pi); // Millisec * Second * Minute
  }

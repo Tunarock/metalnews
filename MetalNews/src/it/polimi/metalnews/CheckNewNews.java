@@ -2,6 +2,12 @@ package it.polimi.metalnews;
 
 import it.polimi.metalnews.activity.MainActivity;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -25,7 +31,7 @@ import android.widget.Toast;
 
 public class CheckNewNews extends IntentService {
 
-
+	private static final int ID_NOTIFICATION = 1;
 	private static final String URL_NEWS = "http://metalitalia.com/category/notizie/";
 	private String lastTitle;
 	
@@ -39,6 +45,7 @@ public class CheckNewNews extends IntentService {
 
 		Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 		Log.i("msg", "Service-onStartCommand");
+		
 		
 		return super.onStartCommand(intent,flags,startId);
 	}
@@ -54,8 +61,30 @@ public class CheckNewNews extends IntentService {
 		
 //		AsyncHttpClient clientNews = new AsyncHttpClient();
 //		clientNews.get(URL_NEWS,getNewsResponseHandler());
-		
-		lastTitle = intent.getStringExtra("lastTitle");
+	
+	    try {
+	        InputStream inputStream = openFileInput("settings.txt");
+
+	        if ( inputStream != null ) {
+	            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+	            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+	            String receiveString = "";
+	            StringBuilder stringBuilder = new StringBuilder();
+
+	            while ( (receiveString = bufferedReader.readLine()) != null ) {
+	                stringBuilder.append(receiveString);
+	            }
+
+	            inputStream.close();
+	            lastTitle = stringBuilder.toString();
+	        }
+	    }
+	    catch (FileNotFoundException e) {
+	        Log.e("login activity", "File not found: " + e.toString());
+	    } catch (IOException e) {
+	        Log.e("login activity", "Can not read file: " + e.toString());
+	    }
+
 		Log.i("msg", "Ultimo titolo: "+lastTitle);
 		Log.i("msg", "sto controllando se ci sono nuove notizie");
 		
@@ -110,7 +139,7 @@ public class CheckNewNews extends IntentService {
 					NotificationManager mNotificationManager =
 					    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 					// mId allows you to update the notification later on.
-					mNotificationManager.notify(1, mBuilder.build());
+					mNotificationManager.notify(ID_NOTIFICATION, mBuilder.build());
 					
 				}
 				        

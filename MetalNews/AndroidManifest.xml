@@ -13,8 +13,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -58,9 +58,19 @@
             android:name="it.polimi.metalnews.activity.InfoActivity"
             android:label="@string/title_activity_info" >
         </activity>
-        <service android:name="CheckNewNews"/>
-        <service android:name="StartTimer"/>
-        <receiver  android:process=":remote" android:name="Alarm"></receiver>
+
+        <service android:name="it.polimi.metalnews.CheckNewNews" />
+        <service android:name="it.polimi.metalnews.StartTimer" />
+
+        <receiver
+            android:name="it.polimi.metalnews.Alarm"
+            android:process=":remote" >
+        </receiver>
+
+        <activity
+            android:name="it.polimi.metalnews.SettingActivity"
+            android:label="@string/title_activity_setting" >
+        </activity>
     </application>
 
 </manifest>
