@@ -21,5 +21,9 @@
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
     <string name="app_id">1468249036731724</string>
     <string name="title_activity_info">InfoActivity</string>
-
+    <string name="title_activity_setting">SettingActivity</string>
+   <string name="pref_notification">Attiva notifiche</string>
+   <string name="pref_notification_summ">Notifica la presenza di nuove notizie</string>
+   
+   
 </resources>

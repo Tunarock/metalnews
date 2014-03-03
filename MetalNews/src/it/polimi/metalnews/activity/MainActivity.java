@@ -4,6 +4,8 @@ import it.polimi.metalnews.Info;
 import it.polimi.metalnews.R;
 import it.polimi.metalnews.StartTimer;
 
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -13,6 +15,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -45,6 +48,7 @@ public class MainActivity extends Activity implements AnimationListener {
 
 	private static final int SET_ON_CONNECTION = 1;
 	private static final int ANIMATION_TIME = 5000;
+	private static final int ID_NOTIFICATION = 1;
 
 	private Info[] news;
 
@@ -132,10 +136,20 @@ public class MainActivity extends Activity implements AnimationListener {
 
 	@Override
 	public void onAnimationEnd(Animation animation) {
-
 		if(isSuccededNews){
+			try {
+				 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("settings.txt", Context.MODE_PRIVATE));
+			     outputStreamWriter.write(news[0].getTitle());
+			     outputStreamWriter.close();
+			} catch (Exception e) {
+			  e.printStackTrace();
+			}
+			
+			NotificationManager mNotificationManager =
+				    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+				mNotificationManager.cancel(ID_NOTIFICATION);
+				
 			Intent intent=new Intent(this, StartTimer.class);
-			intent.putExtra("lastTitle", news[0].getTitle());
 			startService(intent);
 			startHome();
 		}

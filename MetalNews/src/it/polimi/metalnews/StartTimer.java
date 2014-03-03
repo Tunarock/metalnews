@@ -7,7 +7,6 @@ import android.os.IBinder;
 
 public class StartTimer extends Service
 {
-	String lastTitle;
     Alarm alarm = new Alarm();
     public void onCreate()
     {
@@ -18,8 +17,8 @@ public class StartTimer extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) 
 {
-    	lastTitle=intent.getStringExtra("lastTitle");
-        alarm.SetAlarm(StartTimer.this, lastTitle);
+    
+        alarm.SetAlarm(StartTimer.this);
          
      return START_STICKY;
 }
@@ -28,7 +27,7 @@ public class StartTimer extends Service
 
     public void onStart(Context context,Intent intent, int startId)
     {
-        alarm.SetAlarm(context, lastTitle);
+        alarm.SetAlarm(context);
     }
 
     @Override
