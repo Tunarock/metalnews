@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:key="pref_sync"
-        android:title="@string/pref_notification"
-        android:summary="@string/pref_notification_summ"
-        android:defaultValue="true" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+ 
+     
+    <PreferenceCategory android:title="@string/pref_notification_title" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefNotification"
+            android:summary="@string/pref_notification_summ"
+            android:title="@string/pref_notification">
+        </CheckBoxPreference>
+ 
+        <ListPreference
+            android:key="prefNotificationFrequency"
+            android:entries="@array/notificationFrequency"
+            android:summary="@string/pref_notification_frequency_summary"
+            android:entryValues="@array/notificationFrequencyValues"
+            android:title="@string/pref_notification_frequency" />
+    </PreferenceCategory>
+ 
 </PreferenceScreen>
