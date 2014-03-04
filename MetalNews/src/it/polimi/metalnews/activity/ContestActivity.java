@@ -31,8 +31,8 @@ public class ContestActivity extends InfoActivity {
 
 			LinearLayout ll = (LinearLayout) findViewById(R.id.info_layout);
 			LayoutInflater li=getLayoutInflater();
-
-			for(Element p: paragraphs)
+			
+			for(Element p : paragraphs)
 			{
 				analyzer(p, ll, li);
 			}

@@ -50,7 +50,6 @@ public abstract class InfoFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		if(savedInstanceState != null)
 			resumeState(savedInstanceState);
-//		Log
 
 	}
 	
@@ -82,6 +81,7 @@ public abstract class InfoFragment extends ListFragment {
 		return null;
 	}	
 
+	@Override
 	public void onSaveInstanceState (Bundle outState){
 		super.onSaveInstanceState(outState);
 		

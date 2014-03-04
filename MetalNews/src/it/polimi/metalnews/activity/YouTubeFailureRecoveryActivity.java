@@ -18,8 +18,6 @@ package it.polimi.metalnews.activity;
 
 import it.polimi.metalnews.DeveloperKey;
 import it.polimi.metalnews.R;
-import it.polimi.metalnews.R.string;
-
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;

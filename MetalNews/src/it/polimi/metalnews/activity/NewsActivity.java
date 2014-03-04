@@ -33,14 +33,14 @@ public class NewsActivity extends InfoActivity{
 
 			Elements paragraphs = entryContent.get(0).getElementsByTag("p"); 
 
-			LinearLayout rl = (LinearLayout) findViewById(R.id.info_layout);
+			LinearLayout ll = (LinearLayout) findViewById(R.id.info_layout);
+			
 			LayoutInflater li=getLayoutInflater();
-
-			for(Element p: paragraphs)
+			
+			for(Element p : paragraphs)
 			{
-				analyzer(p, rl, li);
+				analyzer(p, ll, li);
 			}
-
 
 
 		}	

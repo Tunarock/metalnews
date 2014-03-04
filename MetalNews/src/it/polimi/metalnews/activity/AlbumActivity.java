@@ -2,10 +2,6 @@ package it.polimi.metalnews.activity;
 
 import it.polimi.metalnews.ImageDownloadHtml;
 import it.polimi.metalnews.R;
-import it.polimi.metalnews.R.drawable;
-import it.polimi.metalnews.R.id;
-import it.polimi.metalnews.R.layout;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

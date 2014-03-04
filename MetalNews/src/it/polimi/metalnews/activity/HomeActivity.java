@@ -24,7 +24,6 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
@@ -171,8 +170,8 @@ ActionBar.TabListener {
 	            return true;
 	        
 	        case R.id.menu_settings:
-	            Intent i = new Intent(this, SettingActivity.class);
-	            startActivityForResult(i, RESULT_SETTINGS);
+	            Intent i = new Intent(this,SettingActivity.class);
+	            startActivity(i);
 	            return true;
 	       
 	    }

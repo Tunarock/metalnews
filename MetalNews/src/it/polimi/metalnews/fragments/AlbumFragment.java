@@ -43,9 +43,9 @@ public class AlbumFragment extends InfoFragment {
 			clientAlbum.get(url,getAlbumContestResponseHandler());
 
 			setListShown(false);
-//		}else if (savedInstanceState==null){
-//			
-//			setInfoAdapter();
+		}else {
+			
+			setInfoAdapter();
 		}
 
 	}

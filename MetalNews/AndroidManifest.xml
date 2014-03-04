@@ -59,7 +59,8 @@
             android:label="@string/title_activity_info" >
         </activity>
 
-        <service android:name="it.polimi.metalnews.CheckNewNews" />
+        <activity android:name="it.polimi.metalnews.SettingActivity" android:label="@string/title_activity_setting">
+        </activity><service android:name="it.polimi.metalnews.CheckNewNews" />
         <service android:name="it.polimi.metalnews.StartTimer" />
 
         <receiver
@@ -67,10 +68,7 @@
             android:process=":remote" >
         </receiver>
 
-        <activity
-            android:name="it.polimi.metalnews.SettingActivity"
-            android:label="@string/title_activity_setting" >
-        </activity>
+        
     </application>
 
 </manifest>

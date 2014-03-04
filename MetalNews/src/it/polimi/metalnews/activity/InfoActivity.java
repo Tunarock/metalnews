@@ -46,36 +46,36 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implements OnInitializedListener,ConnectionCallbacks, OnConnectionFailedListener {
 
 	private ProgressDialog bar;
-	
+
 	protected Info info;
 	private String id;
 	protected static final String ENTRY_CONTENT = "entry-content";
-	
+
 	/* Client used to interact with Google APIs. */
 	private GoogleApiClient mGoogleApiClient;
 	/*Gestore Facebook*/
 	private UiLifecycleHelper uiHelper;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		bar = ProgressDialog.show(this,"", "content loading");
-			
-        bar.getWindow().setGravity(Gravity.BOTTOM);
-        
+
+		bar.getWindow().setGravity(Gravity.BOTTOM);
+
 		setContentView(R.layout.background_black_logo);
-		
+
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		
+
 		getActionBar().setTitle(R.string.app_name);
-		
+
 		Bundle bundle = getIntent().getExtras();
 		info=(Info)bundle.getParcelable("info");
-		
+
 		getInfoFromHtml();
-		
+
 		setUiHelper(savedInstanceState);
 
 		setGoogleClient();
@@ -84,18 +84,35 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 	}
 
 	protected abstract void parseResponse(String content);
-	
+
+
+	protected void parseFooter(String publish, LinearLayout ll, LayoutInflater li) {
+
+		View view = li.inflate(R.layout.single_text_element, ll, false);
+		TextView tw= (TextView) view.findViewById(R.id.text);
+
+		
+		StringBuilder sb = new StringBuilder(publish);
+		int index = sb.indexOf("|");
+		tw.setText(Html.fromHtml(sb.substring(0,index), null ,null));
+		ll.addView(tw);			
+	}
+
 	protected void analyzer (Element e, LinearLayout ll, LayoutInflater li){
 
 		View view;
-		
+
 		if(e.hasText()){
-			view = li.inflate(R.layout.single_text_element, ll, false);
-			TextView tw= (TextView) view.findViewById(R.id.text);
-			tw.setText(Html.fromHtml(e.html(), null ,null));
-			tw.setLinkTextColor(getResources().getColor(R.color.GreenMetal));
-			tw.setMovementMethod(LinkMovementMethod.getInstance());
-			ll.addView(tw);			
+			if(e.attr("class").compareTo("meta-info")!=0){
+				view = li.inflate(R.layout.single_text_element, ll, false);
+				TextView tw= (TextView) view.findViewById(R.id.text);
+				tw.setText(Html.fromHtml(e.html(), null ,null));
+				tw.setLinkTextColor(getResources().getColor(R.color.GreenMetal));
+				tw.setMovementMethod(LinkMovementMethod.getInstance());
+				ll.addView(tw);
+			}else{
+				parseFooter(e.text(), ll, li);
+			}
 		}else{
 			if(!e.getElementsByTag("img").isEmpty()){
 				view = li.inflate(R.layout.single_image_element, ll, false);
@@ -107,7 +124,7 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			else if(!e.getElementsByTag("iframe").isEmpty()){
 				String url=e.getElementsByTag("iframe").get(0).attr("src");
 				id=url.substring(29, 40);
-						
+
 				if (isYouTubeUrl(url)) {
 					view = li.inflate(R.layout.single_youtube, ll, false);
 					YouTubePlayerView youTubeView = (YouTubePlayerView) view
@@ -123,21 +140,21 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 
 
 	}
-		
+
 	private boolean isYouTubeUrl(String url) {
 		// TODO Auto-generated method stub
 		return url.contains("youtube");
 	}
 
 	protected abstract void setLayout();
-	
+
 	protected void getInfoFromHtml(){
-		
-		
+
+
 		AsyncHttpClient client = new AsyncHttpClient();
-		
+
 		client.get(info.getTargetUrl(),new AsyncHttpResponseHandler(){
-			
+
 			@Override
 			public void onSuccess(String response) {
 
@@ -160,19 +177,19 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 					java.lang.Throwable error) {
 
 			}
-			
-			
+
+
 		});
-		
+
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.news, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
@@ -212,11 +229,13 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 		uiHelper.onDestroy();
 	}
 
+	@Override
 	protected void onStart() {
 		super.onStart();
 		mGoogleApiClient.connect();
 	}
 
+	@Override
 	protected void onStop() {
 		super.onStop();
 
@@ -224,7 +243,7 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			mGoogleApiClient.disconnect();
 		}
 	}
-	
+
 	//FB
 	private void shareFacebook() {
 		if (FacebookDialog.canPresentShareDialog(getApplicationContext(), 
@@ -239,20 +258,20 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			// Fallback. For example, publish the post using the Feed Dialog
 		}
 	}
-	
+
 	private void setUiHelper(Bundle savedInstanceState) {
 		uiHelper = new UiLifecycleHelper(this, new StatusCallback() {
-			
+
 			@Override
 			public void call(Session session, SessionState state, Exception exception) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		uiHelper.onCreate(savedInstanceState);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -270,7 +289,7 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 		});
 	}
 	//END FB
-	
+
 	//YOUTUBE
 	@Override
 	public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
@@ -294,7 +313,7 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 
 	}
 	//END YOUTUBE
-	
+
 	//GOOGLE +
 	private void shareOnGPlus() {
 
@@ -308,7 +327,7 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 		startActivityForResult(shareIntent, 0);
 
 	}
-	
+
 	private void setGoogleClient() {
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		.addConnectionCallbacks(this)
@@ -317,23 +336,23 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 		.addScope(Plus.SCOPE_PLUS_LOGIN)
 		.build();
 	}
-	
+
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onConnected(Bundle arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onConnectionSuspended(int arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	//END GOOGLE +
 }
