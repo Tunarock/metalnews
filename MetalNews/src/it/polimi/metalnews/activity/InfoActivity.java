@@ -7,6 +7,7 @@ import it.polimi.metalnews.R;
 
 import org.jsoup.nodes.Element;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,17 +61,19 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		bar = ProgressDialog.show(this,"", "content loading");
-
-		bar.getWindow().setGravity(Gravity.BOTTOM);
+		ActionBar actionBar = getActionBar();
+		actionBar.hide();
+		//		bar = ProgressDialog.show(this,"", "content loading");
+		//
+		//		bar.getWindow().setGravity(Gravity.BOTTOM);
 
 		setContentView(R.layout.background_black_logo);
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		getActionBar().setTitle(R.string.app_name);
+
+		actionBar.setTitle(R.string.app_name);
 
 		Bundle bundle = getIntent().getExtras();
 		info=(Info)bundle.getParcelable("info");
@@ -91,7 +95,7 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 		View view = li.inflate(R.layout.single_text_element, ll, false);
 		TextView tw= (TextView) view.findViewById(R.id.text);
 
-		
+
 		StringBuilder sb = new StringBuilder(publish);
 		int index = sb.indexOf("|");
 		tw.setText(Html.fromHtml(sb.substring(0,index), null ,null));
@@ -123,14 +127,21 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			}
 			else if(!e.getElementsByTag("iframe").isEmpty()){
 				String url=e.getElementsByTag("iframe").get(0).attr("src");
-				id=url.substring(29, 40);
-
 				if (isYouTubeUrl(url)) {
+					id=url.substring(29, 40);
 					view = li.inflate(R.layout.single_youtube, ll, false);
 					YouTubePlayerView youTubeView = (YouTubePlayerView) view
 							.findViewById(R.id.youtube_view);
 					ll.addView(view);
 					youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
+				}else if (isSoundCloudUrl(url)){
+
+					WebView wb = (WebView) li.inflate(R.layout.soundcloud, ll, false);
+					String html = e.getElementsByTag("iframe").get(0).attr("src");
+					wb.loadUrl(html);
+					ll.addView(wb);
+
+
 				}
 
 			}
@@ -146,6 +157,11 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 		return url.contains("youtube");
 	}
 
+	private boolean isSoundCloudUrl(String url) {
+		// TODO Auto-generated method stub
+		return url.contains("soundcloud");
+	}
+
 	protected abstract void setLayout();
 
 	protected void getInfoFromHtml(){
@@ -158,7 +174,8 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			@Override
 			public void onSuccess(String response) {
 
-				bar.dismiss();
+				//				bar.dismiss();
+				getActionBar().show();
 				setLayout();
 				parseResponse(response);
 
