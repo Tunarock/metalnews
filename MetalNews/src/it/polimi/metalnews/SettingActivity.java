@@ -18,8 +18,6 @@ public class SettingActivity extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.setting);
 		
 		Preference prefNotification = findPreference("prefNotification");
-	
-
 		prefNotification.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			 
 		    @Override
@@ -37,7 +35,6 @@ public class SettingActivity extends PreferenceActivity {
 		            {
 		            	Preference frequency = findPreference("prefNotificationFrequency");
 		            	frequency.setEnabled(false);
-            	
 		            }
 		            	
 		        }
@@ -45,6 +42,16 @@ public class SettingActivity extends PreferenceActivity {
 		    }
 		     
 		});
+		
+		
+		SharedPreferences sharedPrefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		
+		if(sharedPrefs.getBoolean("prefNotification", false))
+		{
+			Preference frequency = findPreference("prefNotificationFrequency");
+        	frequency.setEnabled(true);
+		}
 		
 	}
 
@@ -59,21 +66,19 @@ public class SettingActivity extends PreferenceActivity {
 	public void onBackPressed() {
 		super.onBackPressed();
 
+			
 		SharedPreferences sharedPrefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 
-		int  hour= Integer.valueOf(sharedPrefs.getString("prefNotificationFrequency", "NULL"));
-
-
-		Intent i=new Intent(this,StartTimer.class);
-		this.stopService(i);
-
-		if(hour>0)
-		{
-
-			this.startService(i);
+		Intent intent=new Intent(this, StartTimer.class);
+		stopService(intent);
+		
+		if(sharedPrefs.getBoolean("prefNotification", false)){
+		
+			startService(intent);
 		}
-
+			
+	
 		Toast.makeText(this, "Impostazioni salvate", Toast.LENGTH_SHORT).show();
 
 	}

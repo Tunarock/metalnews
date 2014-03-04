@@ -148,8 +148,6 @@ public class MainActivity extends Activity implements AnimationListener {
 				    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				mNotificationManager.cancel(ID_NOTIFICATION);
 				
-			Intent intent=new Intent(this, StartTimer.class);
-			startService(intent);
 			startHome();
 		}
 		else{
