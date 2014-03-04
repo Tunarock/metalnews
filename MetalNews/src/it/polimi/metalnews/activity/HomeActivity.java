@@ -195,7 +195,8 @@ ActionBar.TabListener {
 		
 		int currentIndex = mViewPager.getCurrentItem();
 		InfoFragment infoFragment = ((SectionsPagerAdapter)mViewPager.getAdapter()).getFragment(currentIndex);
-		infoFragment.refreshList();
+		if(infoFragment!=null)
+			infoFragment.refreshList();
 		
 	}
 	

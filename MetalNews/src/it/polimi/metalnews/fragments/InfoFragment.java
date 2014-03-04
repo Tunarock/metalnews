@@ -43,6 +43,8 @@ public abstract class InfoFragment extends ListFragment {
 	protected static final String PAGE_SUFFIX = "page/";
 	protected boolean isFragmentResumed;
 	protected static final int ID_NOTIFICATION = 1;
+	private int lastVisiblePosition;
+	private View progressbar;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public abstract class InfoFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		if(savedInstanceState != null)
 			resumeState(savedInstanceState);
+		
+		progressbar = getActivity().getLayoutInflater().inflate(R.layout.fragment_progressbar, null);
 
 	}
 	
@@ -156,12 +160,14 @@ public abstract class InfoFragment extends ListFragment {
 		View view = getActivity().getLayoutInflater().inflate(R.layout.more_content, null);
 		//	    TextView textinlfated = (TextView) view.findViewById(R.id.more_content);
 		ListView lv = getListView();
-		if(lv.getFooterViewsCount()==0)
+		if(lv.getFooterViewsCount()==0){
 			lv.addFooterView(view);
-
+		}
 		NewsAdapter ada=new NewsAdapter(getActivity().getBaseContext(), info);
 		setListAdapter(ada);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
+
+			
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -173,7 +179,10 @@ public abstract class InfoFragment extends ListFragment {
 					
 					ListView lv = getListView();
 					lv.removeFooterView(view);
+					
+					lv.addFooterView(progressbar);
 					getMoreContent();
+					lastVisiblePosition = lv.getFirstVisiblePosition();
 				}
 			}
 
@@ -191,8 +200,10 @@ public abstract class InfoFragment extends ListFragment {
 
 				moreInfo = getArrayInfoFromHtml(response);
 				mergeInfos();
+				ListView lv = getListView();
+				lv.removeFooterView(progressbar);
 				setInfoAdapter();
-
+				lv.setSelection(lastVisiblePosition);
 			}
 			
 		});
