@@ -15,7 +15,8 @@
             android:entries="@array/notificationFrequency"
             android:summary="@string/pref_notification_frequency_summary"
             android:entryValues="@array/notificationFrequencyValues"
-            android:title="@string/pref_notification_frequency" />
+            android:title="@string/pref_notification_frequency"
+            android:enabled="false" />
     </PreferenceCategory>
  
 </PreferenceScreen>

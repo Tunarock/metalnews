@@ -4,13 +4,11 @@
         <item name="1">Due volte al giorno</item>
         <item name="2">Una volta al giorno</item>
         <item name="3">Una volta a settimana</item>
-        <item name="4">Mai</item>
     </string-array>
     <string-array name="notificationFrequencyValues">
         <item name="1">12</item>
         <item name="2">24</item>
         <item name="3">168</item>
-        <item name="4">0</item>
     </string-array>
      
 </resources>
