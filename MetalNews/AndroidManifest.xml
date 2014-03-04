@@ -75,6 +75,10 @@
             android:name="it.polimi.metalnews.GroupsListActivity"
             android:label="@string/title_activity_groups_list" >
         </activity>
+        <activity
+            android:name="it.polimi.metalnews.GroupActivity"
+            android:label="@string/title_activity_group" >
+        </activity>
     </application>
 
 </manifest>

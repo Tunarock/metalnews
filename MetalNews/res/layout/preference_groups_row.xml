@@ -4,14 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <EditText
+    <TextView
         android:id="@+id/group_name"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_weight="7"
-        android:ems="10" >
+        android:ems="10"
+        >
         
-    </EditText>
+    </TextView>
 
     <ImageButton
         android:id="@+id/cancel"
