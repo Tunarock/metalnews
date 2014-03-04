@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,6 +35,7 @@ public class CheckNewNews extends IntentService {
 
 	private static final int ID_NOTIFICATION = 1;
 	private static final String URL_NEWS = "http://metalitalia.com/category/notizie/";
+	private final String FILE="listaGruppi.txt";
 	private String lastTitle;
 	
 	
@@ -105,9 +108,15 @@ public class CheckNewNews extends IntentService {
 				
 				Info i=new Info(title,null,null);
 				
+				
+				//recupero i nomi dei gruppi da notificare
+				ArrayList<String> groups=readFile(FILE);
+				
+				
 				if(lastTitle.compareTo(i.getTitle())!=0){
 					
 					//Ci sono nuove notizie
+					
 					
 					NotificationCompat.Builder mBuilder =
 					        new NotificationCompat.Builder(this)
@@ -147,6 +156,35 @@ public class CheckNewNews extends IntentService {
 		
 	}
 
+	
+	public ArrayList<String> readFile(String file)
+	{
+		ArrayList<String> groups=new ArrayList<String>();
+		
+		try {
+	        InputStream inputStream = openFileInput(file);
+
+	        if ( inputStream != null ) {
+	            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+	            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+	            String receiveString = "";
+
+	            while ( (receiveString = bufferedReader.readLine()) != null ) {
+	                groups.add(receiveString);
+	            }
+
+	            inputStream.close();
+	        }
+	    }
+	    catch (FileNotFoundException e) {
+	      
+	    } catch (IOException e) {
+
+	    }
+		
+		return groups;
+		
+	}
 
 
 

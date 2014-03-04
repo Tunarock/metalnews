@@ -29,6 +29,8 @@
     <string name="pref_notification_frequency">Intervallo di aggiornamento</string>
     <string name="menu_settings">Impostazioni</string>
     <string name="title_activity_groups_list">GroupsListActivity</string>
-  <string name="selected_groups">Gruppi da notificare</string>
-    
+    <string name="selected_groups">Gruppi da notificare</string>
+    <string name="title_activity_group">GroupActivity</string>
+     <string name="name_group">Nome gruppo</string>
+
 </resources>
