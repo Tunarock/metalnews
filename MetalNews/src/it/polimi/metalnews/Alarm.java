@@ -16,16 +16,10 @@ public class Alarm extends BroadcastReceiver
 	@Override
 	public void onReceive(Context context, Intent intent) 
 	{   
-		//         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-		//         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
-		//         wl.acquire();
-
 		Intent i=new Intent(context, CheckNewNews.class);
 		context.startService(i);
 
 		Log.i("msg", "scattato");
-
-		//         wl.release();
 	}
 
 	public void SetAlarm(Context context, int hour)

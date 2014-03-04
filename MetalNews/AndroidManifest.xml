@@ -58,9 +58,12 @@
             android:name="it.polimi.metalnews.activity.InfoActivity"
             android:label="@string/title_activity_info" >
         </activity>
+        <activity
+            android:name="it.polimi.metalnews.SettingActivity"
+            android:label="@string/title_activity_setting" >
+        </activity>
 
-        <activity android:name="it.polimi.metalnews.SettingActivity" android:label="@string/title_activity_setting">
-        </activity><service android:name="it.polimi.metalnews.CheckNewNews" />
+        <service android:name="it.polimi.metalnews.CheckNewNews" />
         <service android:name="it.polimi.metalnews.StartTimer" />
 
         <receiver
@@ -68,7 +71,10 @@
             android:process=":remote" >
         </receiver>
 
-        
+        <activity
+            android:name="it.polimi.metalnews.GroupsListActivity"
+            android:label="@string/title_activity_groups_list" >
+        </activity>
     </application>
 
 </manifest>

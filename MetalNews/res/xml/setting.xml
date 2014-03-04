@@ -9,7 +9,7 @@
             android:summary="@string/pref_notification_summ"
             android:title="@string/pref_notification">
         </CheckBoxPreference>
- 
+              
         <ListPreference
             android:key="prefNotificationFrequency"
             android:entries="@array/notificationFrequency"
@@ -17,6 +17,13 @@
             android:entryValues="@array/notificationFrequencyValues"
             android:title="@string/pref_notification_frequency"
             android:enabled="false" />
+        
+         <Preference
+    	    android:key="gruppi"
+     	    android:title="@string/selected_groups"
+      		android:persistent="false">           
+            
+        </Preference>
     </PreferenceCategory>
  
 </PreferenceScreen>

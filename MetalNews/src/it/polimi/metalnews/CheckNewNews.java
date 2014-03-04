@@ -58,10 +58,6 @@ public class CheckNewNews extends IntentService {
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		
-//		AsyncHttpClient clientNews = new AsyncHttpClient();
-//		clientNews.get(URL_NEWS,getNewsResponseHandler());
-	
 	    try {
 	        InputStream inputStream = openFileInput("settings.txt");
 
