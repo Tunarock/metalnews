@@ -1,18 +1,12 @@
 package it.polimi.metalnews;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -69,7 +63,7 @@ public class GroupsListActivity extends ListActivity {
 				})
 				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						// Do nothing.
+				
 					}
 				}).show();
 

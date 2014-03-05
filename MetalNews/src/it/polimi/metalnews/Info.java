@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 public class Info implements Parcelable{
 
+	private static final String DEFAULT_TITLE = "METALITALIA:";
 	Bitmap img;
 	String title;
 	String backtitle;
@@ -32,7 +33,7 @@ public class Info implements Parcelable{
 			this.title=str.substring(0, endTitle-1);
 			this.backtitle= str.substring(endTitle+2, str.length());
 			}else{
-				this.title="METALITALIA:";
+				this.title=DEFAULT_TITLE;
 				this.backtitle=completeTitle;
 				
 			}

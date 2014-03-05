@@ -21,6 +21,7 @@
          <Preference
     	    android:key="gruppi"
      	    android:title="@string/selected_groups"
+     	    android:summary="@string/selected_groups_summary"
       		android:persistent="false">           
             
         </Preference>

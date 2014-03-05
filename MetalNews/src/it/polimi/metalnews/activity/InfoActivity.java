@@ -47,6 +47,8 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implements OnInitializedListener,ConnectionCallbacks, OnConnectionFailedListener {
 
+	private static final int YOUTUBE_ID_LENGTH = 11;
+
 	private ProgressDialog bar;
 
 	protected Info info;
@@ -128,7 +130,8 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			else if(!e.getElementsByTag("iframe").isEmpty()){
 				String url=e.getElementsByTag("iframe").get(0).attr("src");
 				if (isYouTubeUrl(url)) {
-					id=url.substring(29, 40);
+					int start=url.indexOf("embed/")+6;
+					id=url.substring(start, start+YOUTUBE_ID_LENGTH);
 					view = li.inflate(R.layout.single_youtube, ll, false);
 					YouTubePlayerView youTubeView = (YouTubePlayerView) view
 							.findViewById(R.id.youtube_view);
