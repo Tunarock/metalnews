@@ -37,22 +37,22 @@ public class CheckNewNews extends IntentService {
 	private static final String URL_NEWS = "http://metalitalia.com/category/notizie/";
 	private final String FILE="listaGruppi.txt";
 	private String lastTitle;
-	
-	
+
+
 	public CheckNewNews() {
 		super("CheckNewNews");
 	}
-	
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
 		Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 		Log.i("msg", "Service-onStartCommand");
-		
-		
+
+
 		return super.onStartCommand(intent,flags,startId);
 	}
-	
+
 
 	/**
 	 * The IntentService calls this method from the default worker thread with
@@ -61,132 +61,149 @@ public class CheckNewNews extends IntentService {
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
-	    try {
-	        InputStream inputStream = openFileInput("settings.txt");
+		try {
+			InputStream inputStream = openFileInput("settings.txt");
 
-	        if ( inputStream != null ) {
-	            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-	            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-	            String receiveString = "";
-	            StringBuilder stringBuilder = new StringBuilder();
+			if ( inputStream != null ) {
+				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+				String receiveString = "";
+				StringBuilder stringBuilder = new StringBuilder();
 
-	            while ( (receiveString = bufferedReader.readLine()) != null ) {
-	                stringBuilder.append(receiveString);
-	            }
+				while ( (receiveString = bufferedReader.readLine()) != null ) {
+					stringBuilder.append(receiveString);
+				}
 
-	            inputStream.close();
-	            lastTitle = stringBuilder.toString();
-	        }
-	    }
-	    catch (FileNotFoundException e) {
-	        Log.e("login activity", "File not found: " + e.toString());
-	    } catch (IOException e) {
-	        Log.e("login activity", "Can not read file: " + e.toString());
-	    }
+				inputStream.close();
+				lastTitle = stringBuilder.toString();
+			}
+		}
+		catch (FileNotFoundException e) {
+			Log.e("login activity", "File not found: " + e.toString());
+		} catch (IOException e) {
+			Log.e("login activity", "Can not read file: " + e.toString());
+		}
 
 		Log.i("msg", "Ultimo titolo: "+lastTitle);
 		Log.i("msg", "sto controllando se ci sono nuove notizie");
-		
-		
+
+
 		try {
-		    HttpClient client = new DefaultHttpClient();  
-		    HttpGet get = new HttpGet(URL_NEWS);
-		    HttpResponse responseGet = client.execute(get);  
-		    HttpEntity resEntityGet = responseGet.getEntity();  
-		    if (resEntityGet != null) {  
-		    	
-		        String response = EntityUtils.toString(resEntityGet);
-		        
-		        String title;
+			HttpClient client = new DefaultHttpClient();  
+			HttpGet get = new HttpGet(URL_NEWS);
+			HttpResponse responseGet = client.execute(get);  
+			HttpEntity resEntityGet = responseGet.getEntity();  
+			if (resEntityGet != null) {  
+
+				String response = EntityUtils.toString(resEntityGet);
+
+				ArrayList<String> title=new ArrayList<String>();
+				ArrayList<Info> info=new ArrayList<Info>();
 				Document doc=Jsoup.parse(response);
 
 				Element link = doc.getElementById("recent-posts");
 
 				Elements blocks= link.getElementsByClass("box-light");
 
-				title=blocks.get(0).getElementsByClass("text-small").get(0).text();
-				
-				Info i=new Info(title,null,null);
-				
-				
+
+				int i=0;
+				for(Element block: blocks)
+				{
+					title.add(block.getElementsByClass("text-small").get(0).text());
+					info.add(new Info(title.get(i),null,null));
+					i++;
+				}
+
+
+
+
 				//recupero i nomi dei gruppi da notificare
 				ArrayList<String> groups=readFile(FILE);
-				
-				
-				if(lastTitle.compareTo(i.getTitle())!=0){
-					
-					//Ci sono nuove notizie
-					
-					
-					NotificationCompat.Builder mBuilder =
-					        new NotificationCompat.Builder(this)
-					        .setSmallIcon(R.drawable.launcher)
-					        .setContentTitle("MetalNews")
-					        .setContentText("Ci sono nuove notizie");
-					// Creates an explicit intent for an Activity in your app
-					Intent resultIntent = new Intent(this, MainActivity.class);
 
-					// The stack builder object will contain an artificial back stack for the
-					// started Activity.
-					// This ensures that navigating backward from the Activity leads out of
-					// your application to the Home screen.
-					TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-					// Adds the back stack for the Intent (but not the Intent itself)
-					stackBuilder.addParentStack(MainActivity.class);
-					// Adds the Intent that starts the Activity to the top of the stack
-					stackBuilder.addNextIntent(resultIntent);
-					PendingIntent resultPendingIntent =
-					        stackBuilder.getPendingIntent(
-					            0,
-					            PendingIntent.FLAG_UPDATE_CURRENT
-					        );
-					mBuilder.setContentIntent(resultPendingIntent);
-					NotificationManager mNotificationManager =
-					    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-					// mId allows you to update the notification later on.
-					mNotificationManager.notify(ID_NOTIFICATION, mBuilder.build());
-					
+				//se non ci sono gruppi notifico qualsiasi nuova notizia
+				if(groups.size()==0)
+				{
+					if(info.get(0).getTitle().compareTo(lastTitle)!=0)
+						createNotificationNews();
 				}
-				        
-		        
-		    }
+				else
+					for(i=0;i<title.size()&& info.get(i).getTitle().compareTo(lastTitle)!=0 ;i++) 
+						if(groups.contains(info.get(i).getTitle())){
+
+							createNotificationNews();
+							break;
+
+						}
+
+
+			}
 		} catch (Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
-		
+
 	}
 
-	
+	private void createNotificationNews() {
+		NotificationCompat.Builder mBuilder =
+				new NotificationCompat.Builder(this)
+		.setSmallIcon(R.drawable.launcher)
+		.setContentTitle("MetalNews")
+		.setContentText("Ci sono nuove notizie");
+		// Creates an explicit intent for an Activity in your app
+		Intent resultIntent = new Intent(this, MainActivity.class);
+
+		// The stack builder object will contain an artificial back stack for the
+		// started Activity.
+		// This ensures that navigating backward from the Activity leads out of
+		// your application to the Home screen.
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+		// Adds the back stack for the Intent (but not the Intent itself)
+		stackBuilder.addParentStack(MainActivity.class);
+		// Adds the Intent that starts the Activity to the top of the stack
+		stackBuilder.addNextIntent(resultIntent);
+		PendingIntent resultPendingIntent =
+				stackBuilder.getPendingIntent(
+						0,
+						PendingIntent.FLAG_UPDATE_CURRENT
+						);
+		mBuilder.setContentIntent(resultPendingIntent);
+		NotificationManager mNotificationManager =
+				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(ID_NOTIFICATION, mBuilder.build());
+	}
+
+
 	public ArrayList<String> readFile(String file)
 	{
 		ArrayList<String> groups=new ArrayList<String>();
-		
+
 		try {
-	        InputStream inputStream = openFileInput(file);
+			InputStream inputStream = openFileInput(file);
 
-	        if ( inputStream != null ) {
-	            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-	            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-	            String receiveString = "";
+			if ( inputStream != null ) {
+				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+				String receiveString = "";
 
-	            while ( (receiveString = bufferedReader.readLine()) != null ) {
-	                groups.add(receiveString);
-	            }
+				while ( (receiveString = bufferedReader.readLine()) != null ) {
+					groups.add(receiveString.toUpperCase()+":");
+				}
 
-	            inputStream.close();
-	        }
-	    }
-	    catch (FileNotFoundException e) {
-	      
-	    } catch (IOException e) {
+				inputStream.close();
+			}
+		}
+		catch (FileNotFoundException e) {
 
-	    }
-		
+		} catch (IOException e) {
+
+		}
+
 		return groups;
-		
-	}
-
-
-
 
 	}
+
+
+
+
+}
