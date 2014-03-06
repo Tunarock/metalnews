@@ -2,7 +2,6 @@ package it.polimi.metalnews.activity;
 
 import it.polimi.metalnews.Info;
 import it.polimi.metalnews.R;
-import it.polimi.metalnews.SettingActivity;
 import it.polimi.metalnews.fragments.AlbumFragment;
 import it.polimi.metalnews.fragments.ContestFragment;
 import it.polimi.metalnews.fragments.InfoFragment;
