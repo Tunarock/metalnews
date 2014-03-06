@@ -2,7 +2,6 @@ package it.polimi.metalnews.activity;
 
 import it.polimi.metalnews.Info;
 import it.polimi.metalnews.R;
-import it.polimi.metalnews.StartTimer;
 
 import java.io.OutputStreamWriter;
 import java.security.MessageDigest;

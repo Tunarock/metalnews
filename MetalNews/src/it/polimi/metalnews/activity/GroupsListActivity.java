@@ -1,4 +1,9 @@
-package it.polimi.metalnews;
+package it.polimi.metalnews.activity;
+
+import it.polimi.metalnews.R;
+import it.polimi.metalnews.R.id;
+import it.polimi.metalnews.R.layout;
+import it.polimi.metalnews.R.menu;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

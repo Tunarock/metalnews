@@ -59,17 +59,13 @@
             android:label="@string/title_activity_info" >
         </activity>
         <activity
-            android:name="it.polimi.metalnews.SettingActivity"
+            android:name="it.polimi.metalnews.activity.SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
         
         <activity
-            android:name="it.polimi.metalnews.GroupsListActivity"
+            android:name="it.polimi.metalnews.activity.GroupsListActivity"
             android:label="@string/title_activity_groups_list" >
-        </activity>
-        <activity
-            android:name="it.polimi.metalnews.GroupActivity"
-            android:label="@string/title_activity_group" >
         </activity>
 
         <service android:name="it.polimi.metalnews.CheckNewNews" />

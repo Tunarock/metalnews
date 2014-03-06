@@ -1,5 +1,8 @@
-package it.polimi.metalnews;
+package it.polimi.metalnews.activity;
 
+import it.polimi.metalnews.R;
+import it.polimi.metalnews.StartTimer;
+import it.polimi.metalnews.R.xml;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
