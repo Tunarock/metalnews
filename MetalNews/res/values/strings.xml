@@ -33,4 +33,6 @@
     <string name="title_activity_group">GroupActivity</string>
     <string name="name_group">Nome gruppo</string>
 	<string name="selected_groups_summary">Gruppi da notificare. Lascia la lista vuota per ricevere notifiche per ogni nuova notizia</string>
+	<string name="articolo">Articolo</string>
+	<string name="album">Album</string>
 </resources>

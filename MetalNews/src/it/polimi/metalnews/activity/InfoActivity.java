@@ -63,8 +63,7 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ActionBar actionBar = getActionBar();
-		actionBar.hide();
+		getActionBar().hide();
 		//		bar = ProgressDialog.show(this,"", "content loading");
 		//
 		//		bar.getWindow().setGravity(Gravity.BOTTOM);
@@ -73,9 +72,6 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
-		actionBar.setTitle(R.string.app_name);
 
 		Bundle bundle = getIntent().getExtras();
 		info=(Info)bundle.getParcelable("info");

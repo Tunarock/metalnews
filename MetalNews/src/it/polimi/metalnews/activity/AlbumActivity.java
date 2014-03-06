@@ -59,7 +59,7 @@ public class AlbumActivity extends InfoActivity {
 	@Override
 	protected void setLayout() {
 		setContentView(layout);
-		
+		getActionBar().setTitle(R.string.album);
 	}
 
 	@Override

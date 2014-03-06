@@ -93,7 +93,7 @@ public class ContestActivity extends InfoActivity {
 	@Override
 	protected void setLayout() {
 		setContentView(layout);
-		
+		getActionBar().setTitle(R.string.articolo);
 		TextView title= (TextView) findViewById(R.id.info_title);
 		title.setText(info.getTitle()+ " " + info.getBacktitle());
 		
