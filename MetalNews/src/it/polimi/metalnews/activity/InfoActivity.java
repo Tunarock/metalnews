@@ -40,6 +40,7 @@ import com.google.android.gms.plus.PlusShare;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.OnInitializedListener;
+import com.google.android.youtube.player.YouTubePlayer.PlayerStyle;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.loopj.android.http.AsyncHttpClient;
@@ -312,6 +313,8 @@ public abstract class InfoActivity extends YouTubeFailureRecoveryActivity implem
 			boolean wasRestored) {
 		if (!wasRestored) {
 
+			PlayerStyle style = PlayerStyle.MINIMAL;
+			player.setPlayerStyle(style);
 			player.cueVideo(id);
 		}
 	}
